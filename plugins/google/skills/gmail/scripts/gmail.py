@@ -9,6 +9,7 @@ Použití:
   ./gmail.py list [počet] [gmail dotaz]   # výchozí: 10, "in:inbox"
   ./gmail.py read <id>                    # celý e-mail (id z výpisu list)
   ./gmail.py send <komu> <předmět> [bcc,bcc,...] < tělo.txt
+  ./gmail.py reply <id> [bcc,bcc,...] < tělo.txt   # odpověď ve vlákně, stejným příjemcům (To/Cc)
 """
 import base64
 import email
@@ -70,9 +71,15 @@ def cmd_read(msg_id):
         print("\nPřílohy:", ", ".join(attachments))
 
 
-def cmd_send(to, subject, bcc=""):
+def cmd_send(to, subject, bcc="", reply_to=None):
     msg = EmailMessage()
     msg["To"], msg["Subject"] = to, subject
+    body_extra = {}
+    if reply_to:  # thread it: Gmail needs threadId, other clients In-Reply-To/References
+        msg["In-Reply-To"], msg["References"] = reply_to["mid"], (reply_to["refs"] + " " + reply_to["mid"]).strip()
+        if reply_to["cc"]:
+            msg["Cc"] = reply_to["cc"]
+        body_extra["threadId"] = reply_to["thread"]
     if bcc:  # čárkami oddělené adresy; Gmail hlavičku Bcc příjemcům nedoručí
         msg["Bcc"] = bcc
     body = sys.stdin.read()
@@ -82,11 +89,22 @@ def cmd_send(to, subject, bcc=""):
     else:
         msg.set_content(body)
     raw = base64.urlsafe_b64encode(msg.as_bytes()).decode()
-    print("Odesláno, id:", service().send(userId="me", body={"raw": raw}).execute()["id"])
+    print("Odesláno, id:", service().send(userId="me", body={"raw": raw, **body_extra}).execute()["id"])
+
+
+def cmd_reply(msg_id, bcc=""):
+    orig = service().get(userId="me", id=msg_id, format="metadata",
+                         metadataHeaders=["To", "Cc", "Subject", "Message-ID", "References"]).execute()
+    h = {x["name"].lower(): x["value"] for x in orig["payload"]["headers"]}
+    subject = h.get("subject", "")
+    if not subject.lower().startswith("re:"):
+        subject = "Re: " + subject
+    cmd_send(h.get("to", ""), subject, bcc, {"mid": h.get("message-id", ""), "refs": h.get("references", ""),
+                                             "cc": h.get("cc", ""), "thread": orig["threadId"]})
 
 
 if __name__ == "__main__":
-    cmds = {"list": cmd_list, "read": cmd_read, "send": cmd_send}
+    cmds = {"list": cmd_list, "read": cmd_read, "send": cmd_send, "reply": cmd_reply}
     if len(sys.argv) < 2 or sys.argv[1] not in cmds:
         sys.exit(__doc__)
     cmds[sys.argv[1]](*sys.argv[2:])
