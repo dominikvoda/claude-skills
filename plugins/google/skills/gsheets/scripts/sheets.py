@@ -30,7 +30,8 @@ SCOPES = ["https://www.googleapis.com/auth/spreadsheets.readonly", "https://www.
 def creds():
     client, token = DATA / "credentials.json", DATA / "sheets-token.json"
     if not client.exists():
-        sys.exit(f"Chybí OAuth klient {client} – viz Setup v SKILL.md skillu gsheets/gmail.")
+        DATA.mkdir(mode=0o700, parents=True, exist_ok=True)
+        sys.exit(f"Missing Google OAuth client: save the downloaded Desktop-app JSON as {client} (Setup in the gsheets skill).")
     c = None
     if token.exists() and set(SCOPES) <= set(json.loads(token.read_text()).get("scopes", [])):
         c = Credentials.from_authorized_user_file(token, SCOPES)

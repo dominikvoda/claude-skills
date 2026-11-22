@@ -1,6 +1,6 @@
 ---
 name: ceskydiscgolf
-description: ceskydiscgolf.cz (new iDiscGolf, "IDG v2"), the Czech disc golf association portal. Use to look up tournaments, players, registrations, results, ratings, leagues, clubs or courses (fields) through its REST API, and to manage a tournament you direct: propositions, rounds, layouts, flights, registrations and payments. Triggers: ceskydiscgolf, iDiscGolf, IDG, propozice, flighty.
+description: "ceskydiscgolf.cz (new iDiscGolf, \"IDG v2\"), the Czech disc golf association portal. Use to look up tournaments, players, registrations, results, ratings, leagues, clubs or courses (fields) through its REST API, and to manage a tournament you direct: propositions, rounds, layouts, flights, registrations and payments. Triggers: ceskydiscgolf, iDiscGolf, IDG, propozice, flighty."
 ---
 
 # ceskydiscgolf.cz
@@ -16,11 +16,7 @@ The OpenAPI spec is public: `GET /api/schema/?format=json` (about 280 paths, cac
 
 ## Login
 
-Public reads need no account. Logged-in reads and writes use the user's own ceskydiscgolf.cz account, stored in `~/.ceskydiscgolf.json` as `{"username": "...", "password": "..."}` (`IDG_CREDS` points elsewhere). The client refuses a file that others can read. When the file is missing, ask the user to create it themselves. The password must never pass through the chat or the shell history, so they create an empty private file and fill it in an editor outside Claude:
-
-```bash
-install -m 600 /dev/null ~/.ceskydiscgolf.json   # then edit: {"username": "...", "password": "..."}
-```
+Public reads need no account. Logged-in reads and writes use the user's own ceskydiscgolf.cz account, stored in `~/.ceskydiscgolf.json` as `{"username": "...", "password": "..."}` (`IDG_CREDS` points elsewhere). On the first logged-in call, `idg.py` creates the file empty and private and asks for the login. Tell the user the path and ask them to fill it in with a text editor themselves. The password must never pass through the chat. The client keeps the file private (mode 600) on macOS and Linux.
 
 Keep its contents and every token out of the chat and out of files.
 
@@ -28,7 +24,9 @@ Auth is SimpleJWT: `POST /api/user/token/` returns an access token that lasts 30
 
 ## Tools
 
-`${CLAUDE_PLUGIN_ROOT}/scripts/idg.py METHOD PATH [JSON] [--auth] [--pii] [--out FILE]` is the REST client (Python 3.9+, stdlib only). GET runs anonymously unless you pass `--auth`; writes always log in. It strips e-mail and phone fields unless you pass `--pii`. For anything that loops, import it as a library: `sys.path.insert(0, "${CLAUDE_PLUGIN_ROOT}/scripts"); from idg import call`.
+Paths in this skill are relative to its directory (the folder with this SKILL.md).
+
+`python3 scripts/idg.py METHOD PATH [JSON] [--auth] [--pii] [--out FILE]` is the REST client (Python 3.9+, stdlib only). GET runs anonymously unless you pass `--auth`; writes always log in. It strips e-mail and phone fields unless you pass `--pii`. For anything that loops, import it as a library: `sys.path.insert(0, "<this skill dir>/scripts"); from idg import call`.
 
 Remember the trailing slash on every path (without it you get a 301 or 404). Response bodies contain raw control characters, so parse them with `json.loads(..., strict=False)`.
 

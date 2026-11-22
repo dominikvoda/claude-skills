@@ -20,7 +20,7 @@ Pluginy pro [Claude Code](https://code.claude.com/docs/en/overview) pro ředitel
 
 ## Průvodce instalací
 
-Návod je pro **macOS a Linux** a zabere asi 5 minut. Po těchhle třech krocích funguje všechno kolem ceskydiscgolf.cz. Google přístup si můžeš [doplnit později](#volitelně-google-tabulky-a-gmail), až ho budeš potřebovat.
+Zabere asi 5 minut. Po těchhle třech krocích funguje všechno kolem ceskydiscgolf.cz. Google přístup si můžeš [doplnit později](#volitelně-google-tabulky-a-gmail), až ho budeš potřebovat.
 
 ### 1. Nainstaluj Claude Code
 
@@ -28,7 +28,7 @@ Claude Code je Claude, který běží v terminálu a umí za tebe spouštět př
 
 Postupuj podle [oficiálního návodu](https://code.claude.com/docs/en/setup). Pak otevři Terminál, napiš `claude` a přihlas se.
 
-Pluginy potřebují ještě **Python 3**. Na Macu většinou už je, ověříš to v Terminálu příkazem `python3 --version`. Když chybí, macOS sám nabídne instalaci.
+Pluginy potřebují ještě **Python 3**. Nemusíš ho řešit předem: když chybí, Claude to pozná a pomůže ti s instalací.
 
 ### 2. Přidej pluginy
 
@@ -45,30 +45,17 @@ Když se zeptá na rozsah (scope), vyber **user**. Pluginy pak budeš mít k dis
 
 ### 3. Přihlášení na ceskydiscgolf.cz
 
-Claude se na ceskydiscgolf.cz přihlašuje tvým účtem, takže smí totéž, co ty. Turnaje, které řídíš, může spravovat, ostatní jen číst. Přihlašovací údaje uložíš do souboru, který si vytvoříš **sám, mimo Claude**. Heslo nikdy nepiš do chatu.
+Claude se na ceskydiscgolf.cz přihlašuje tvým účtem, takže smí totéž, co ty. Turnaje, které řídíš, může spravovat, ostatní jen číst. **Heslo nikdy nepiš do chatu.** Vyplníš ho sám do souboru, který Claude připraví.
 
-V **obyčejném Terminálu** (ne v Claude Code) spusť:
+1. V Claude Code napiš *„Jaké turnaje na ceskydiscgolf.cz řídím?“*
+2. Claude ti napoprvé řekne, že založil soubor `.ceskydiscgolf.json` ve tvé domovské složce, a požádá tě o jeho vyplnění.
+3. Otevři ten soubor v textovém editoru (TextEdit, Poznámkový blok…). Doplň do něj svůj login a heslo z ceskydiscgolf.cz, ulož ho a zavři:
+   ```json
+   {"username": "tvuj-login", "password": "tvoje-heslo"}
+   ```
+4. Napiš Claudovi, že je hotovo.
 
-```bash
-install -m 600 /dev/null ~/.ceskydiscgolf.json   # vytvoří prázdný soubor, který čteš jen ty
-open -e ~/.ceskydiscgolf.json                    # otevře ho v TextEditu (na Linuxu: nano ~/.ceskydiscgolf.json)
-```
-
-Vlož tohle s vlastními údaji, ulož a zavři:
-
-```json
-{"username": "tvuj-login", "password": "tvoje-heslo"}
-```
-
-✅ **Ověření:** v Claude Code napiš *„Jaké turnaje na ceskydiscgolf.cz řídím?“*
-
-## Jak s tím pracovat
-
-- **Piš normálně, česky.** Není potřeba znát žádné příkazy. Claude sám pozná, který skill použít.
-- **Buď konkrétní, o který turnaj jde:** stačí místo nebo datum („After Dark na Kamýku“, „turnaj 12. 12.“).
-- **Čti, co navrhuje.** U každé změny ti ukáže plán: co změní, kterých hráčů se to týká a jestli jim přijde e-mail. Teprve pak napiš „ok“.
-- **Flighty na přání:** Claude se tě nejdřív zeptá, na které jamce startuješ a jestli máš další pokyny (koho dát k sobě, koho rozdělit, kdo přijde pozdě). Pak ukáže návrh a do ceskydiscgolf.cz ho zapíše až po tvém souhlasu. Zveřejnění flightů hráčům je samostatný krok.
-- **Info e-mail** Claude jen napíše. Odešleš ho sám, hráčům ve skryté kopii (BCC).
+✅ **Ověření:** Claude vypíše turnaje, které řídíš.
 
 ## Volitelně: Google tabulky a Gmail
 
@@ -76,19 +63,14 @@ Tohle nastavení potřebuješ, jen když chceš, aby Claude četl tvoje Google t
 
 Google nedovolí jen tak cizímu programu číst tvoje data. Proto si vytvoříš vlastní malou „aplikaci“, které to povolíš. Uvidí jen to, k čemu máš přístup ty, a nikdo jiný ji používat nebude. Nastavení zabere asi 10 minut a dělá se jednou.
 
-0. Nainstaluj **uv**, pomocníka, kterého Google skripty potřebují: `brew install uv`, nebo podle [návodu](https://docs.astral.sh/uv/getting-started/installation/).
+Google skripty potřebují pomocníka [uv](https://docs.astral.sh/uv/). Když ho nemáš, Claude ti ho pomůže nainstalovat.
 
 1. Otevři [Google Cloud Console](https://console.cloud.google.com/), přihlas se svým Google účtem a vytvoř **nový projekt** (jméno je jedno, třeba `claude`).
 2. V horním vyhledávání postupně najdi a **zapni** (Enable) **Google Sheets API**, **Google Drive API** a pokud chceš e-maily, i **Gmail API**.
 3. Otevři **Google Auth Platform** a projdi úvodní nastavení. Vyplníš název aplikace a svůj e-mail, typ uživatelů zvol **External**.
 4. V části **Audience** klikni na **Publish app**, aby stav byl **In production**. Bez toho tě Google každých 7 dní odhlásí.
 5. V části **Clients** klikni na **Create client**, typ **Desktop app**, a pak **stáhni JSON** (Download JSON).
-6. V **obyčejném Terminálu** soubor přesuň na správné místo:
-   ```bash
-   mkdir -p -m 700 ~/.config/claude-google
-   mv ~/Downloads/client_secret_*.json ~/.config/claude-google/credentials.json
-   chmod 600 ~/.config/claude-google/credentials.json
-   ```
+6. Napiš Claudovi *„Stáhl jsem JSON pro Google, nastav ho.“* Soubor přesune na správné místo (`.config/claude-google/credentials.json` v domovské složce). Klidně ho tam můžeš přesunout i sám.
 7. V Claude Code napiš *„Vypiš moje Google tabulky.“* Otevře se prohlížeč s přihlášením Google:
    - Google upozorní, že aplikace není ověřená. To je v pořádku, je to tvoje vlastní aplikace. Klikni na **Advanced** a pak **Go to … (unsafe)**.
    - Povol přístup.
@@ -110,13 +92,24 @@ Nebo si zapni automatické aktualizace: napiš `/plugin`, otevři záložku **Ma
 | Problém | Řešení |
 |---|---|
 | Claude o pluginech neví | Restartuj Claude Code (`/exit`, pak znovu `claude`) a zkontroluj `/plugin`. |
-| „is readable by others, run: chmod 600 …“ | Soubor s heslem můžou číst ostatní uživatelé počítače. Spusť v Terminálu příkaz, který hláška ukazuje. |
 | Přihlášení na ceskydiscgolf.cz selhává (401) | Zkontroluj login a heslo v `~/.ceskydiscgolf.json` (přihlas se s nimi na webu). Po pár neúspěších server na chvíli blokuje další pokusy. |
-| „Chybí OAuth klient …“ | Ještě nemáš hotové [Google nastavení](#volitelně-google-tabulky-a-gmail), nebo `credentials.json` není v `~/.config/claude-google/`. |
-| Google tě po týdnu znovu chce přihlásit | Aplikace je ve stavu Testing, oprav to podle bodu 4 v [Google nastavení](#volitelně-google-tabulky-a-gmail). Pak smaž staré tokeny: `rm ~/.config/claude-google/*-token.json`. |
+| „Missing Google OAuth client …“ | Ještě nemáš hotové [Google nastavení](#volitelně-google-tabulky-a-gmail), nebo `credentials.json` není v `~/.config/claude-google/`. |
+| Google tě po týdnu znovu chce přihlásit | Aplikace je ve stavu Testing, oprav to podle bodu 4 v [Google nastavení](#volitelně-google-tabulky-a-gmail). Pak požádej Clauda, ať smaže staré Google tokeny a přihlásí tě znovu. |
 | Claude chce spustit příkaz a ptá se na povolení | To je normální. Čtení dat klidně povol, u zápisů si přečti, co dělá. |
 
+**Kde je to vyzkoušené:** na macOS s Claude Code. Windows (Claude Code s Git Bashem) a Linux by měly fungovat stejně, ale vyzkoušené nejsou. Když narazíš na problém, [založ issue](https://github.com/dominikvoda/claude-skills/issues).
+
 **Bezpečnost:** hesla a tokeny jsou jen u tebe v počítači (`~/.ceskydiscgolf.json` a `~/.config/claude-google/`), nikdy v tomhle repu. Nikomu je neposílej a nevkládej je do chatu.
+
+## Codex a další AI agenti
+
+Skilly jsou ve standardním formátu [Agent Skills](https://agentskills.io), takže fungují i v Codexu, Cursoru, Gemini CLI a dalších. Nainstaluješ je cross-agent instalátorem (potřebuje [Node.js](https://nodejs.org)):
+
+```bash
+npx skills add dominikvoda/claude-skills
+```
+
+Vyber skilly a agenta. `flighty-na-prani` a `tournament-email` potřebují i skill `ceskydiscgolf`, flighty navíc `gsheets`. Aktualizace stáhneš příkazem `npx skills update`. Vyzkoušené je to jen v Claude Code.
 
 ---
 
@@ -138,6 +131,8 @@ Requirements: Python 3.9+, and [uv](https://docs.astral.sh/uv/) for the Google s
 | Google OAuth client + tokens | `~/.config/claude-google/` (`credentials.json`, `sheets-token.json`, `gmail-token.json`). Bring your own Desktop OAuth client, see the Setup section of [`gsheets`](plugins/google/skills/gsheets/SKILL.md). |
 
 Updates aren't automatic for third-party marketplaces: run `/plugin marketplace update claude-skills`.
+
+Other agents (Codex, Cursor, Gemini CLI, …): `npx skills add dominikvoda/claude-skills`. The skills follow the [Agent Skills](https://agentskills.io) format; paths are relative to each skill's folder. Tested with Claude Code on macOS only.
 
 ## License
 

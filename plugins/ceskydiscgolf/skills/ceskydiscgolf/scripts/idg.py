@@ -20,12 +20,24 @@ PII = ('email', 'phone', 'user_email', 'user_phone', 'bank_account_number')
 _tok = None
 
 
+def load_creds():
+    """The file holds a plain password: create it private, keep it private (POSIX modes; Windows has none)."""
+    if not os.path.exists(CREDS):
+        fd = os.open(CREDS, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+        os.write(fd, b'{"username": "", "password": ""}\n')
+        os.close(fd)
+    elif os.name == 'posix' and os.stat(CREDS).st_mode & 0o077:
+        os.chmod(CREDS, 0o600)
+    c = json.load(open(CREDS))
+    if not (c.get('username') or c.get('email')) or not c.get('password'):
+        raise SystemExit(f'Fill in your ceskydiscgolf.cz login in {CREDS} with a text editor (not in the chat), then retry.')
+    return c
+
+
 def token():
     global _tok
     if not _tok:
-        if os.stat(CREDS).st_mode & 0o077:  # the file holds a plain password
-            raise SystemExit(f'{CREDS} is readable by others, run: chmod 600 {CREDS}')
-        c = json.load(open(CREDS))
+        c = load_creds()
         body = json.dumps({'username': c.get('username') or c.get('email'), 'password': c['password']}).encode()
         req = urllib.request.Request(BASE + '/user/token/', body, {'Content-Type': 'application/json'})
         with urllib.request.urlopen(req, timeout=30) as r:

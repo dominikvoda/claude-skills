@@ -33,7 +33,8 @@ SCOPES = ["https://www.googleapis.com/auth/gmail.readonly", "https://www.googlea
 def service():
     client, token = DATA / "credentials.json", DATA / "gmail-token.json"
     if not client.exists():
-        sys.exit(f"Chybí OAuth klient {client} – viz Setup v SKILL.md skillu gsheets/gmail.")
+        DATA.mkdir(mode=0o700, parents=True, exist_ok=True)
+        sys.exit(f"Missing Google OAuth client: save the downloaded Desktop-app JSON as {client} (Setup in the gsheets skill).")
     creds = None
     # starý token bez nových scopes → znovu přihlásit
     if token.exists() and set(SCOPES) <= set(json.loads(token.read_text()).get("scopes", [])):

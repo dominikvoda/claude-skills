@@ -23,13 +23,15 @@ Extra pairings: append them to `wishes.tsv` as rows (`<time>\t<keyword>\t<name>\
 
 ## Steps
 
+Paths in this skill are relative to its directory (the folder with this SKILL.md).
+
 ```bash
-IDG=${CLAUDE_PLUGIN_ROOT}/scripts/idg.py
+IDG=../ceskydiscgolf/scripts/idg.py    # the ceskydiscgolf skill's client
 T=<tournament uuid>; R1=<round 1 id from admin-rounds/>
 python3 $IDG GET /tournaments/$T/admin-rounds/$R1/cards/ --auth --out /tmp/cards.json
 python3 $IDG GET /tournaments/$T/admin-players/ --auth --out /tmp/players.json
 # via the google:gsheets skill: sheets.py read <sheet id> "'<wishes tab>'" > /tmp/wishes.tsv
-python3 ${CLAUDE_SKILL_DIR}/scripts/flights.py /tmp/cards.json /tmp/players.json /tmp/wishes.tsv <keyword> [--holes N] --director "<name>" --director-hole <H> --out /tmp/payload.json
+python3 scripts/flights.py /tmp/cards.json /tmp/players.json /tmp/wishes.tsv <keyword> [--holes N] --director "<name>" --director-hole <H> --out /tmp/payload.json
 ```
 
 What the script does:
