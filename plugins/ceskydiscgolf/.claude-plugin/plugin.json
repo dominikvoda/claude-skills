@@ -1,0 +1,8 @@
+{
+  "name": "ceskydiscgolf",
+  "description": "ceskydiscgolf.cz (iDiscGolf) pro ředitele turnajů: turnaje, hráči, výsledky, propozice, flighty na přání, info e-mail hráčům.",
+  "author": { "name": "Dominik Voda" },
+  "repository": "https://github.com/dominikvoda/claude-skills",
+  "license": "MIT",
+  "dependencies": ["google"]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "claude-skills",
+  "owner": {
+    "name": "Dominik Voda",
+    "url": "https://github.com/dominikvoda"
+  },
+  "description": "Claude Code plugins by Dominik Voda: Czech disc golf (ceskydiscgolf.cz) tournament tools and Google Sheets/Gmail access.",
+  "plugins": [
+    {
+      "name": "ceskydiscgolf",
+      "source": "./plugins/ceskydiscgolf",
+      "description": "ceskydiscgolf.cz (iDiscGolf) pro ředitele turnajů: turnaje, hráči, výsledky, propozice, flighty na přání, info e-mail hráčům."
+    },
+    {
+      "name": "google",
+      "source": "./plugins/google",
+      "description": "Google Sheets (read-only) and Gmail (read + send with confirmation) via your own OAuth client."
+    }
+  ]
+}
