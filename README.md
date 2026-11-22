@@ -1,13 +1,13 @@
 # claude-skills
 
-Pluginy pro [Claude Code](https://code.claude.com/docs/en/overview) pro ředitele disc golfových turnajů na [ceskydiscgolf.cz](https://ceskydiscgolf.cz) a pro přístup ke Google Sheets a Gmailu. *English summary [at the bottom](#english).*
+Pluginy pro [Claude Code](https://code.claude.com/docs/en/overview) pro ředitele disc golfových turnajů na [ceskydiscgolf.cz](https://ceskydiscgolf.cz). Volitelně umí číst i Google tabulky a pracovat s Gmailem. *English summary [at the bottom](#english).*
 
 ## Co to umí
 
 Řekneš Claudovi běžnou češtinou, co potřebuješ, a on si data dohledá sám:
 
 - **„Kolik lidí je přihlášených na můj turnaj v Nučicích a kdo ještě nezaplatil?“**: přečte registrace z ceskydiscgolf.cz.
-- **„Poskládej flighty na přání na Kamýk.“**: vezme přání hráčů z Google formuláře a registrace z ceskydiscgolf.cz a navrhne skupiny. Splní přání a zbytek hráčů namíchá podle výkonnosti.
+- **„Poskládej flighty na přání na Kamýk.“**: vezme přání hráčů z Google formuláře a registrace z ceskydiscgolf.cz a navrhne skupiny. Splní přání a zbytek hráčů namíchá podle výkonnosti. Potřebuje [Google přístup](#volitelně-google-tabulky-a-gmail).
 - **„Napiš info e-mail hráčům před turnajem.“**: připraví e-mail z propozic a nastavení turnaje a doptá se na to, co v nich chybí (sraz, parkování…).
 - **„Uprav propozice“, „přidej hráče“, „označ platbu“**: správa turnajů, které řídíš.
 
@@ -16,11 +16,11 @@ Pluginy pro [Claude Code](https://code.claude.com/docs/en/overview) pro ředitel
 | Plugin | Skilly | K čemu |
 |---|---|---|
 | `ceskydiscgolf` | `ceskydiscgolf`, `flighty-na-prani`, `tournament-email` | turnaje, hráči, výsledky, propozice, flighty, info e-mail |
-| `google` | `gsheets`, `gmail` | čtení Google tabulek, čtení a odesílání Gmailu (instaluje se automaticky s `ceskydiscgolf`) |
+| `google` | `gsheets`, `gmail` | volitelné: čtení Google tabulek, čtení a odesílání Gmailu. Nainstaluje se samo s `ceskydiscgolf`, ale funguje až po [nastavení](#volitelně-google-tabulky-a-gmail). |
 
 ## Průvodce instalací
 
-Návod je pro **macOS a Linux** a celý zabere zhruba 15 minut, většinu z toho Google nastavení (krok 4). Kroky 1–3 stačí na práci s ceskydiscgolf.cz. Krok 4 potřebuješ jen pro flighty na přání z Google formuláře a pro Gmail.
+Návod je pro **macOS a Linux** a zabere asi 5 minut. Po těchhle třech krocích funguje všechno kolem ceskydiscgolf.cz. Google přístup si můžeš [doplnit později](#volitelně-google-tabulky-a-gmail), až ho budeš potřebovat.
 
 ### 1. Nainstaluj Claude Code
 
@@ -28,9 +28,7 @@ Claude Code je Claude, který běží v terminálu a umí za tebe spouštět př
 
 Postupuj podle [oficiálního návodu](https://code.claude.com/docs/en/setup). Pak otevři Terminál, napiš `claude` a přihlas se.
 
-K tomu ještě dvě pomůcky, které pluginy potřebují:
-- **Python 3**: na Macu většinou už je. Ověříš to v Terminálu příkazem `python3 --version`. Když chybí, macOS sám nabídne instalaci.
-- **uv**: potřeba jen pro Google. Instaluje se příkazem `brew install uv`, nebo podle [návodu](https://docs.astral.sh/uv/getting-started/installation/).
+Pluginy potřebují ještě **Python 3**. Na Macu většinou už je, ověříš to v Terminálu příkazem `python3 --version`. Když chybí, macOS sám nabídne instalaci.
 
 ### 2. Přidej pluginy
 
@@ -64,11 +62,21 @@ Vlož tohle s vlastními údaji, ulož a zavři:
 
 ✅ **Ověření:** v Claude Code napiš *„Jaké turnaje na ceskydiscgolf.cz řídím?“*
 
-### 4. Přístup ke Google (volitelné)
+## Jak s tím pracovat
 
-Tenhle krok potřebuješ, jen když chceš, aby Claude četl tvoje Google tabulky (třeba odpovědi z formuláře „flight na přání“) nebo pracoval s Gmailem.
+- **Piš normálně, česky.** Není potřeba znát žádné příkazy. Claude sám pozná, který skill použít.
+- **Buď konkrétní, o který turnaj jde:** stačí místo nebo datum („After Dark na Kamýku“, „turnaj 12. 12.“).
+- **Čti, co navrhuje.** U každé změny ti ukáže plán: co změní, kterých hráčů se to týká a jestli jim přijde e-mail. Teprve pak napiš „ok“.
+- **Flighty na přání:** Claude se tě nejdřív zeptá, na které jamce startuješ a jestli máš další pokyny (koho dát k sobě, koho rozdělit, kdo přijde pozdě). Pak ukáže návrh a do ceskydiscgolf.cz ho zapíše až po tvém souhlasu. Zveřejnění flightů hráčům je samostatný krok.
+- **Info e-mail** Claude jen napíše. Odešleš ho sám, hráčům ve skryté kopii (BCC).
 
-Google nedovolí jen tak cizímu programu číst tvoje data. Proto si vytvoříš vlastní malou „aplikaci“, které to povolíš. Uvidí jen to, k čemu máš přístup ty, a nikdo jiný ji používat nebude.
+## Volitelně: Google tabulky a Gmail
+
+Tohle nastavení potřebuješ, jen když chceš, aby Claude četl tvoje Google tabulky (třeba odpovědi z formuláře „flight na přání“) nebo pracoval s Gmailem.
+
+Google nedovolí jen tak cizímu programu číst tvoje data. Proto si vytvoříš vlastní malou „aplikaci“, které to povolíš. Uvidí jen to, k čemu máš přístup ty, a nikdo jiný ji používat nebude. Nastavení zabere asi 10 minut a dělá se jednou.
+
+0. Nainstaluj **uv**, pomocníka, kterého Google skripty potřebují: `brew install uv`, nebo podle [návodu](https://docs.astral.sh/uv/getting-started/installation/).
 
 1. Otevři [Google Cloud Console](https://console.cloud.google.com/), přihlas se svým Google účtem a vytvoř **nový projekt** (jméno je jedno, třeba `claude`).
 2. V horním vyhledávání postupně najdi a **zapni** (Enable) **Google Sheets API**, **Google Drive API** a pokud chceš e-maily, i **Gmail API**.
@@ -87,14 +95,6 @@ Google nedovolí jen tak cizímu programu číst tvoje data. Proto si vytvoří�
 
 ✅ **Ověření:** Claude vypíše seznam tvých tabulek.
 
-## Jak s tím pracovat
-
-- **Piš normálně, česky.** Není potřeba znát žádné příkazy. Claude sám pozná, který skill použít.
-- **Buď konkrétní, o který turnaj jde:** stačí místo nebo datum („After Dark na Kamýku“, „turnaj 12. 12.“).
-- **Čti, co navrhuje.** U každé změny ti ukáže plán: co změní, kterých hráčů se to týká a jestli jim přijde e-mail. Teprve pak napiš „ok“.
-- **Flighty na přání:** Claude se tě nejdřív zeptá, na které jamce startuješ a jestli máš další pokyny (koho dát k sobě, koho rozdělit, kdo přijde pozdě). Pak ukáže návrh a do ceskydiscgolf.cz ho zapíše až po tvém souhlasu. Zveřejnění flightů hráčům je samostatný krok.
-- **Info e-mail** Claude jen napíše. Odešleš ho sám, hráčům ve skryté kopii (BCC).
-
 ## Aktualizace
 
 Nové verze se nestahují samy. Jednou za čas v Claude Code spusť:
@@ -112,8 +112,8 @@ Nebo si zapni automatické aktualizace: napiš `/plugin`, otevři záložku **Ma
 | Claude o pluginech neví | Restartuj Claude Code (`/exit`, pak znovu `claude`) a zkontroluj `/plugin`. |
 | „is readable by others, run: chmod 600 …“ | Soubor s heslem můžou číst ostatní uživatelé počítače. Spusť v Terminálu příkaz, který hláška ukazuje. |
 | Přihlášení na ceskydiscgolf.cz selhává (401) | Zkontroluj login a heslo v `~/.ceskydiscgolf.json` (přihlas se s nimi na webu). Po pár neúspěších server na chvíli blokuje další pokusy. |
-| „Chybí OAuth klient …“ | Ještě nemáš hotový krok 4, nebo `credentials.json` není v `~/.config/claude-google/`. |
-| Google tě po týdnu znovu chce přihlásit | Aplikace je ve stavu Testing, oprav to podle kroku 4.4. Pak smaž staré tokeny: `rm ~/.config/claude-google/*-token.json`. |
+| „Chybí OAuth klient …“ | Ještě nemáš hotové [Google nastavení](#volitelně-google-tabulky-a-gmail), nebo `credentials.json` není v `~/.config/claude-google/`. |
+| Google tě po týdnu znovu chce přihlásit | Aplikace je ve stavu Testing, oprav to podle bodu 4 v [Google nastavení](#volitelně-google-tabulky-a-gmail). Pak smaž staré tokeny: `rm ~/.config/claude-google/*-token.json`. |
 | Claude chce spustit příkaz a ptá se na povolení | To je normální. Čtení dat klidně povol, u zápisů si přečti, co dělá. |
 
 **Bezpečnost:** hesla a tokeny jsou jen u tebe v počítači (`~/.ceskydiscgolf.json` a `~/.config/claude-google/`), nikdy v tomhle repu. Nikomu je neposílej a nevkládej je do chatu.
