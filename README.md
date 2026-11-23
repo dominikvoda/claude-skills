@@ -1,6 +1,6 @@
 # claude-skills
 
-Pluginy pro [Claude Code](https://code.claude.com/docs/en/overview) pro ředitele disc golfových turnajů na [ceskydiscgolf.cz](https://ceskydiscgolf.cz). Volitelně umí číst i Google tabulky a pracovat s Gmailem. *English summary [at the bottom](#english).*
+Pluginy pro [Claude Code](https://code.claude.com/docs/en/overview) pro ředitele disc golfových turnajů na [ceskydiscgolf.cz](https://ceskydiscgolf.cz). Volitelně umí číst i Google tabulky, [Tagovačku](https://tagovacka.cz) a pracovat s Gmailem. *English summary [at the bottom](#english).*
 
 ## Co to umí
 
@@ -9,13 +9,14 @@ Pluginy pro [Claude Code](https://code.claude.com/docs/en/overview) pro ředitel
 - **„Kolik lidí je přihlášených na můj turnaj v Nučicích a kdo ještě nezaplatil?“**: přečte registrace z ceskydiscgolf.cz.
 - **„Poskládej flighty na přání na Kamýk.“**: vezme přání hráčů z Google formuláře a registrace z ceskydiscgolf.cz a navrhne skupiny. Splní přání, zbytek hráčů namíchá podle výkonnosti, dá max 5 hráčů na jamku a větší skupiny pošle na jamky, které jsou podle historie turnajů lehčí. Potřebuje [Google přístup](#volitelně-google-tabulky-a-gmail).
 - **„Napiš info e-mail hráčům před turnajem.“**: připraví e-mail z propozic a nastavení turnaje a doptá se na to, co v nich chybí (sraz, parkování…).
+- **„Uzavři turnaj na Kamýku.“**: zkontroluje, že jsou zapsaná všechna kola, a najde shody na bedně. Když nějaké jsou, zeptá se tě, jak dopadl rozhoz, nebo výsledky vytáhne z Tagovačky. Pak turnaj uzavře a zapíše místa. Rozhozy z Tagovačky potřebují [přihlášení do Tagovačky](#volitelně-tagovačka).
 - **„Uprav propozice“, „přidej hráče“, „označ platbu“**: správa turnajů, které řídíš.
 
 **Bez tvého souhlasu Claude nic nezmění.** Před každým zápisem na ceskydiscgolf.cz nebo odesláním e-mailu ti ukáže, co přesně udělá, a počká na tvoje „OK“.
 
 | Plugin | Skilly | K čemu |
 |---|---|---|
-| `ceskydiscgolf` | `ceskydiscgolf`, `flighty-na-prani`, `tournament-email` | turnaje, hráči, výsledky, propozice, flighty, info e-mail |
+| `ceskydiscgolf` | `ceskydiscgolf`, `flighty-na-prani`, `tournament-email`, `tagovacka` | turnaje, hráči, výsledky, propozice, flighty, info e-mail, uzavření turnaje, čtení Tagovačky |
 | `google` | `gsheets`, `gmail` | volitelné: čtení Google tabulek, čtení a odesílání Gmailu. Nainstaluje se samo s `ceskydiscgolf`, ale funguje až po [nastavení](#volitelně-google-tabulky-a-gmail). |
 
 ## Průvodce instalací
@@ -57,6 +58,21 @@ Claude se na ceskydiscgolf.cz přihlašuje tvým účtem, takže smí totéž, c
 
 ✅ **Ověření:** Claude vypíše turnaje, které řídíš.
 
+## Volitelně: Tagovačka
+
+Potřebuješ jen tehdy, když chceš, aby Claude četl data z [Tagovačky](https://tagovacka.cz), třeba výsledky rozhozů při uzavírání turnaje. Funguje to stejně jako u ceskydiscgolf.cz:
+
+1. Napiš Claudovi *„Načti z Tagovačky rozhozy na můj turnaj.“*
+2. Claude založí soubor `.tagovacka.json` ve tvé domovské složce (na Macu ti ho rovnou otevře v TextEditu).
+3. Doplň svůj e-mail a heslo z Tagovačky, ulož a zavři:
+   ```json
+   {"email": "tvuj@email.cz", "password": "tvoje-heslo"}
+   ```
+   Když heslo v TextEditu píšeš ručně, vypni Úpravy → Nahrazování → Chytré uvozovky, jinak se z `"` stanou typografické uvozovky a soubor nepůjde přečíst.
+4. Napiš Claudovi, že je hotovo.
+
+Claude z Tagovačky jen čte. Rozhozy zadáváš v Tagovačce sám.
+
 ## Volitelně: Google tabulky a Gmail
 
 Tohle nastavení potřebuješ, jen když chceš, aby Claude četl tvoje Google tabulky (třeba odpovědi z formuláře „flight na přání“) nebo pracoval s Gmailem.
@@ -92,6 +108,7 @@ Nebo si zapni automatické aktualizace: napiš `/plugin`, otevři záložku **Ma
 | Problém | Řešení |
 |---|---|
 | Claude o pluginech neví | Restartuj Claude Code (`/exit`, pak znovu `claude`) a zkontroluj `/plugin`. |
+| Přihlášení do Tagovačky selhává | Zkontroluj e-mail a heslo v `~/.tagovacka.json` (přihlas se s nimi na tagovacka.cz) a že soubor obsahuje rovné uvozovky `"`. |
 | Přihlášení na ceskydiscgolf.cz selhává (401) | Zkontroluj login a heslo v `~/.ceskydiscgolf.json` (přihlas se s nimi na webu). Po pár neúspěších server na chvíli blokuje další pokusy. |
 | „Missing Google OAuth client …“ | Ještě nemáš hotové [Google nastavení](#volitelně-google-tabulky-a-gmail), nebo `credentials.json` není v `~/.config/claude-google/`. |
 | Google tě po týdnu znovu chce přihlásit | Aplikace je ve stavu Testing, oprav to podle bodu 4 v [Google nastavení](#volitelně-google-tabulky-a-gmail). Pak požádej Clauda, ať smaže staré Google tokeny a přihlásí tě znovu. |
@@ -99,7 +116,7 @@ Nebo si zapni automatické aktualizace: napiš `/plugin`, otevři záložku **Ma
 
 **Kde je to vyzkoušené:** na macOS s Claude Code. Windows (Claude Code s Git Bashem) a Linux by měly fungovat stejně, ale vyzkoušené nejsou. Když narazíš na problém, [založ issue](https://github.com/dominikvoda/claude-skills/issues).
 
-**Bezpečnost:** hesla a tokeny jsou jen u tebe v počítači (`~/.ceskydiscgolf.json` a `~/.config/claude-google/`), nikdy v tomhle repu. Nikomu je neposílej a nevkládej je do chatu.
+**Bezpečnost:** hesla a tokeny jsou jen u tebe v počítači (`~/.ceskydiscgolf.json`, `~/.tagovacka.json` a `~/.config/claude-google/`), nikdy v tomhle repu. Nikomu je neposílej a nevkládej je do chatu.
 
 ## Codex a další AI agenti
 
@@ -109,13 +126,13 @@ Skilly jsou ve standardním formátu [Agent Skills](https://agentskills.io), tak
 npx skills add dominikvoda/claude-skills
 ```
 
-Vyber skilly a agenta. `flighty-na-prani` a `tournament-email` potřebují i skill `ceskydiscgolf`, flighty navíc `gsheets`. Aktualizace stáhneš příkazem `npx skills update`. Vyzkoušené je to jen v Claude Code.
+Vyber skilly a agenta. `flighty-na-prani` a `tournament-email` potřebují i skill `ceskydiscgolf`, flighty navíc `gsheets`. Uzavření turnaje s rozhozy z Tagovačky potřebuje `ceskydiscgolf` i `tagovacka`. Aktualizace stáhneš příkazem `npx skills update`. Vyzkoušené je to jen v Claude Code.
 
 ---
 
 ## English
 
-Claude Code plugins for Czech disc golf tournament directors ([ceskydiscgolf.cz](https://ceskydiscgolf.cz)), plus Google Sheets (read-only) and Gmail.
+Claude Code plugins for Czech disc golf tournament directors ([ceskydiscgolf.cz](https://ceskydiscgolf.cz)): registrations, propositions, flights, info e-mails and closing a tournament with podium tie-breaks read from [Tagovačka](https://tagovacka.cz). Plus Google Sheets (read-only) and Gmail.
 
 ```
 /plugin marketplace add dominikvoda/claude-skills
@@ -128,6 +145,7 @@ Requirements: Python 3.9+, and [uv](https://docs.astral.sh/uv/) for the Google s
 | Credential | Location |
 |---|---|
 | ceskydiscgolf.cz login | `~/.ceskydiscgolf.json`, mode 600: `{"username": "...", "password": "..."}` |
+| Tagovačka login (optional, read-only) | `~/.tagovacka.json`, mode 600: `{"email": "...", "password": "..."}` |
 | Google OAuth client + tokens | `~/.config/claude-google/` (`credentials.json`, `sheets-token.json`, `gmail-token.json`). Bring your own Desktop OAuth client, see the Setup section of [`gsheets`](plugins/google/skills/gsheets/SKILL.md). |
 
 Updates aren't automatic for third-party marketplaces: run `/plugin marketplace update claude-skills`.

@@ -1,6 +1,6 @@
 ---
 name: ceskydiscgolf
-description: "ceskydiscgolf.cz (new iDiscGolf, \"IDG v2\"), the Czech disc golf association portal. Use to look up tournaments, players, registrations, results, ratings, leagues, clubs or courses (fields) through its REST API, and to manage a tournament you direct: propositions, rounds, layouts, flights, registrations and payments. Triggers: ceskydiscgolf, iDiscGolf, IDG, propozice, flighty."
+description: "ceskydiscgolf.cz (new iDiscGolf, \"IDG v2\"), the Czech disc golf association portal. Use to look up tournaments, players, registrations, results, ratings, leagues, clubs or courses (fields) through its REST API, and to manage a tournament you direct: propositions, rounds, layouts, flights, registrations, payments, and closing it with podium tie-breaks. Triggers: ceskydiscgolf, iDiscGolf, IDG, propozice, flighty, uzavřít turnaj."
 ---
 
 # ceskydiscgolf.cz
@@ -48,3 +48,5 @@ Every write follows this **change loop**:
 4. **Verify** by re-reading and diffing against the backup. A read right after a write can be stale, so re-read a few minutes later if it looks wrong.
 
 Write recipes and gotchas for tournaments, propositions, rounds, cards, registrations, payments, leagues, clubs and doubles are in [references/write.md](references/write.md).
+
+Closing a finished tournament (uzavření), including podium ties and rozhozy: [references/close.md](references/close.md).
