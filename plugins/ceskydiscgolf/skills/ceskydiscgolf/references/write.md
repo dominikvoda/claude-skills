@@ -28,6 +28,10 @@ Every recipe runs inside the change loop in SKILL.md, on one of **your tournamen
 ## Registrations and payments
 - **Add a player:** `POST /tournaments/{t}/add-player/ {user, division, override:true}`. `override` bypasses a closed registration phase.
 - **Edit or remove:** `PATCH` or `DELETE /tournaments/{t}/players/{adminRowId}/`, where the row id comes from `admin-players/`.
+- **Unregister (odhlášení) for a player:** use `PATCH .../players/{adminRowId}/ {"status":"cancelled"}`. The row and its payment stay, which is the state a player's own withdrawal ends in, so you can still see who needs a refund. Revert with `{"status":"registered"}`. It sends **no e-mail** to the player or the TD, so tell the player yourself.
+- **`DELETE .../players/{adminRowId}/`** hard-deletes the row: it vanishes from `admin-players/` and from Django admin, along with its payment and variable symbol, and nothing can restore it. It **e-mails the player** "Byli jste odhlášeni z turnaje", whether paid or not. Use it only for a registration that should never have existed (a duplicate, the wrong person).
+- **Player-initiated withdrawal:** a paid player has to file `withdrawal-request/` (an unpaid one withdraws directly), and it e-mails the TD "Žádost o odhlášení". Approving it with `withdrawal-requests/{id}/resolve/ {"action":"approve"}` sends the player "Odhlášení povoleno" and "Odhlášení provedeno" and leaves the row `cancelled`.
+- E-mail behaviour of all three was tested on staging on 2026-11-23, by watching the Django admin `post_office/email` queue.
 - **Payment:** send both fields, because neither drives the other: `{is_paid:true, payment_status:"<method>"}` or `{is_paid:false, payment_status:"unpaid"}`. Many old rows are `is_paid=1` with `payment_status=unpaid`, so treat "unpaid" as `is_paid=false`.
 - **Doubles partner:** `POST /tournaments/{t}/players/{founderRowId}/add-partner/` as admin or TD creates the partner as confirmed and sends no e-mail.
 - Ask before any write that might e-mail players: registrations, waiting-list moves, publishing. Say so in the plan.
