@@ -7,7 +7,7 @@ Pluginy pro [Claude Code](https://code.claude.com/docs/en/overview) pro ředitel
 Řekneš Claudovi běžnou češtinou, co potřebuješ, a on si data dohledá sám:
 
 - **„Kolik lidí je přihlášených na můj turnaj v Nučicích a kdo ještě nezaplatil?“**: přečte registrace z ceskydiscgolf.cz.
-- **„Poskládej flighty na přání na Kamýk.“**: vezme přání hráčů z Google formuláře a registrace z ceskydiscgolf.cz a navrhne skupiny. Splní přání a zbytek hráčů namíchá podle výkonnosti. Potřebuje [Google přístup](#volitelně-google-tabulky-a-gmail).
+- **„Poskládej flighty na přání na Kamýk.“**: vezme přání hráčů z Google formuláře a registrace z ceskydiscgolf.cz a navrhne skupiny. Splní přání, zbytek hráčů namíchá podle výkonnosti, dá max 5 hráčů na jamku a větší skupiny pošle na jamky, které jsou podle historie turnajů lehčí. Potřebuje [Google přístup](#volitelně-google-tabulky-a-gmail).
 - **„Napiš info e-mail hráčům před turnajem.“**: připraví e-mail z propozic a nastavení turnaje a doptá se na to, co v nich chybí (sraz, parkování…).
 - **„Uprav propozice“, „přidej hráče“, „označ platbu“**: správa turnajů, které řídíš.
 
