@@ -22,7 +22,7 @@ The post is the director talking to the players. A reader must not be able to te
 
 Allowed sources: IDG data (`post_facts.py`), the tournament's and league's propositions (`info_sections`), the director's answers, and the page's past posts. A claim without one stays out of the post.
 
-- Rules and their consequences (what happens to an unclaimed Ace pool, prizes, league scoring) come from the propositions: `GET /tournaments/{uuid}/` and `GET /leagues/leagues/{leagueId}/`, field `info_sections`. When they don't say, ask.
+- Rules and their consequences (what happens to an unclaimed Ace pool, prizes, league scoring) come from the propositions: `GET /tournaments/{uuid}/` and `GET /leagues/leagues/{leagueId}/`, field `info_sections`. A rule says what should happen, not what did: whether a draw, a payout or a prize handover took place, and anything else unclear, is a question for the requester.
 - Weather data (Open-Meteo, ČHMÚ) only checks what the director says. It is a model or a station a few km away, and its cloud cover can contradict the photos.
 - **Partners** come from the propositions (sponsors, prizes) and the page's past posts: the pages tagged there are in `message_tags` (`type: page`). Write each partner's name exactly as its page is called, so the director can tag it. People (`type: user`) are never tagged.
 - Hole numbers: event layouts with temporary holes renumber the fixed ones. Map them with the director's info e-mail or the layout before naming a hole.
