@@ -1,6 +1,6 @@
 ---
 name: tagovacka
-description: "Read Tagovačka (tagovacka.cz), the club tag and tournament app that mirrors ceskydiscgolf.cz events: standings, podium tie-breaks (rozhozy) and tournaments you manage there. Use when the user mentions Tagovačka or wants the tie-break results stored in it. Triggers: tagovačka, tagovacka, rozhozy, rozhoz."
+description: "Read Tagovačka (tagovacka.cz), the club tag and tournament app that mirrors ceskydiscgolf.cz events: standings, podium tie-breaks (rozhozy) and tournaments you manage there. Use when the user mentions Tagovačka or wants the tie-break results stored in it. Triggers: tagovačka, rozhozy."
 ---
 
 # Tagovačka (read-only)

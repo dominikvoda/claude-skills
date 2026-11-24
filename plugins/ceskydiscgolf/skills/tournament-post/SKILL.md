@@ -12,6 +12,7 @@ Builds on **ceskydiscgolf** (client, *your tournaments* check), the **facebook**
 The post is the director talking to the players. A reader must not be able to tell it was generated.
 
 - Write short, concrete, colloquial Czech in the style of the page's own reports. Every sentence tells a player something they care about.
+- Reread the draft as a player before showing it: a line that would fit any tournament report is **slop**. Make it about this night or cut it.
 - Keep one or two numbers that surprise (the hardest hole, an ace, the best round of the night). Numbers that follow from the format (capacity = holes × 5 on a shotgun), averages of easy holes and anything that reads like a table stay out.
 - Describe conditions as the players lived them, in the director's words. Neither photos nor weather data say how the night felt or how it compared with the forecast.
 - Mark `po rozhozu` on the podium player who won the throw-off (`tiebreak` in the facts), as the page's past posts do.
@@ -30,15 +31,16 @@ Allowed sources: IDG data (`post_facts.py`), the tournament's and league's propo
 
 Paths are relative to this skill's directory.
 
-1. **Facts.** `python3 -I scripts/post_facts.py <uuid> --out /tmp/post_facts.json`: podiums with to par and `tiebreak`, finishers, best rounds, aces (scores of 1 on the cards), hole averages and the next two events of the same main league. It stops when `results/` is empty, which means the event isn't closed yet (`ceskydiscgolf` references/close.md). Then read the propositions for the rules the post touches.
-2. **Style.** Find the page with `facebook` `fb.py pages`, then `fb.py posts <page> 40 --out /tmp/page_posts.json`. Read the 3–5 latest reports of the same series (long text with an album) and reuse their structure: intro, thanks, podium per category with 🥇🥈🥉 and to par, a fact or two, the next event with its link.
+1. **Facts.** `python3 -I scripts/post_facts.py <uuid> --out /tmp/post_facts.json`: podiums with to par and `tiebreak`, finishers, best rounds, aces (scores of 1 on the cards), hole averages and the next two events of the same main league. It stops when `results/` is empty, which means the event isn't closed yet (`ceskydiscgolf` references/close.md). Then read the propositions. Done when every rule the post will mention is backed by a quote from them.
+2. **Style.** Find the page with `facebook` `fb.py pages`, then `fb.py posts <page> 40 --out /tmp/page_posts.json`. Read the 3–5 latest reports of the same series (long text with an album) and reuse their structure: intro, thanks, podium per category with 🥇🥈🥉 and to par, a fact or two, the next event with its link. Done when you can name the parts in their order and the partner pages they tag.
 3. **Ask the director**, in one message: how the night went for the players (conditions, anything that happened), whom to thank, which page, the publish time, and the Drive folder with photos.
-4. **Photos.** `gdrive.py ls <folder>`, then `get` into a new, empty folder. View copies shrunk with `sips -s format jpeg -Z 900`. Build the album:
+4. **Photos.** `gdrive.py ls <folder>`, then `get` and view them as the `gdrive` skill says. Build the album:
    - **cover: the photo of everyone together** (group photo),
    - then atmosphere shots, then the podiums in the order of the categories in the text,
    - one version of each shot (pick portrait or landscape, not both),
    - captions state only what the photo shows (`Pódium MPO`). Tell the podiums apart by facts (category, birth years from `admin-players/` when you direct the event), or ask. Never name individual people in a photo.
+
+   Done when every photo is in the album or deliberately left out.
 5. **Draft.** Show the text and the album list. List every claim you are unsure of. Proofread the Czech, including the director's own changes, and point out typos rather than fixing them silently. Done when the director approves the text and the time.
-6. **Schedule.** Convert to JPEG: `sips -s format jpeg -s formatOptions 90 -Z 2048 <heic> --out <dir>/<name>.jpg`. Write `album.json` (`[{"file", "caption"}]`), then `FB_GO=1 fb.py schedule <page> <text file> --at <ISO time> --album album.json`. Read the post back (`message`, `attachments`, `scheduled_publish_time`). Tagging is the director's step: name the partner pages to tag in Plánovač (type `@` and the name). The API strips `@[page id]` mentions for a development-mode app, tested 2026-11-24. The director can still edit it in Meta Business Suite → Plánovač (`https://business.facebook.com/latest/content_calendar?asset_id=<page id>`).
-   - Add a photo to a scheduled post: upload it with `published=false, temporary=true`, then `POST /{post id}` with the full `attached_media[i]` list in the new order. The message stays as it is.
+6. **Schedule** with `facebook` (`schedule … --album`; its Album rule covers HEIC and adding photos later). Done when the read-back post has the approved text, every photo in order and the agreed time. Then give the director the Plánovač link and the partner pages to tag there.
 7. **Learn.** If the director edits the post in Plánovač, read it back, diff it against your draft and ask about each change. Propose a rule for this skill when the reason generalizes.

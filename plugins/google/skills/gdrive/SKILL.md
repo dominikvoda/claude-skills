@@ -18,4 +18,4 @@ uv run scripts/gdrive.py get <folder|file id|url> <new dir>   # download; a fold
 - Access is read-only; nothing in Drive changes.
 - Uses the same OAuth client as `gsheets` (Setup there; the Google Drive API is already enabled for it) with its own token `drive-token.json` and the `drive.readonly` scope. On the first run a browser login opens: the user has to finish it, so ask them to run `! uv run <skill dir>/scripts/gdrive.py ls <folder>` themselves.
 - An empty listing of a folder someone shared only by link: open the folder once in the browser while signed in, or ask the owner to share it with the user's account.
-- Photos come out full size: shrink copies for viewing with `sips -Z 1200 <file> --out <dir>` on macOS rather than reading originals.
+- Photos come out full size, iPhone ones as HEIC. To look at them, make small JPEG copies in another folder: `sips -s format jpeg -Z 900 <file> --out <view dir>/<name>.jpg` (macOS).
