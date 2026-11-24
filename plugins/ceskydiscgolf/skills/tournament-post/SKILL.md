@@ -15,6 +15,7 @@ The post is the director talking to the players. A reader must not be able to te
 - Keep one or two numbers that surprise (the hardest hole, an ace, the best round of the night). Numbers that follow from the format (capacity = holes × 5 on a shotgun), averages of easy holes and anything that reads like a table stay out.
 - Describe conditions as the players lived them, in the director's words. Neither photos nor weather data say how the night felt or how it compared with the forecast.
 - Mark `po rozhozu` on the podium player who won the throw-off (`tiebreak` in the facts), as the page's past posts do.
+- Write player names exactly as registered on ceskydiscgolf.cz, without nicknames, even when past posts use them.
 
 ## Every claim has a source
 
@@ -22,6 +23,7 @@ Allowed sources: IDG data (`post_facts.py`), the tournament's and league's propo
 
 - Rules and their consequences (what happens to an unclaimed Ace pool, prizes, league scoring) come from the propositions: `GET /tournaments/{uuid}/` and `GET /leagues/leagues/{leagueId}/`, field `info_sections`. When they don't say, ask.
 - Weather data (Open-Meteo, ČHMÚ) only checks what the director says. It is a model or a station a few km away, and its cloud cover can contradict the photos.
+- **Partners** come from the propositions (sponsors, prizes) and the page's past posts: the pages tagged there are in `message_tags` (`type: page`). Write each partner's name exactly as its page is called, so the director can tag it. People (`type: user`) are never tagged.
 - Hole numbers: event layouts with temporary holes renumber the fixed ones. Map them with the director's info e-mail or the layout before naming a hole.
 
 ## Steps
@@ -37,6 +39,6 @@ Paths are relative to this skill's directory.
    - one version of each shot (pick portrait or landscape, not both),
    - captions state only what the photo shows (`Pódium MPO`). Tell the podiums apart by facts (category, birth years from `admin-players/` when you direct the event), or ask. Never name individual people in a photo.
 5. **Draft.** Show the text and the album list. List every claim you are unsure of. Proofread the Czech, including the director's own changes, and point out typos rather than fixing them silently. Done when the director approves the text and the time.
-6. **Schedule.** Convert to JPEG: `sips -s format jpeg -s formatOptions 90 -Z 2048 <heic> --out <dir>/<name>.jpg`. Write `album.json` (`[{"file", "caption"}]`), then `FB_GO=1 fb.py schedule <page> <text file> --at <ISO time> --album album.json`. Read the post back (`message`, `attachments`, `scheduled_publish_time`). The director can still edit it in Meta Business Suite → Plánovač (`https://business.facebook.com/latest/content_calendar?asset_id=<page id>`).
+6. **Schedule.** Convert to JPEG: `sips -s format jpeg -s formatOptions 90 -Z 2048 <heic> --out <dir>/<name>.jpg`. Write `album.json` (`[{"file", "caption"}]`), then `FB_GO=1 fb.py schedule <page> <text file> --at <ISO time> --album album.json`. Read the post back (`message`, `attachments`, `scheduled_publish_time`). Tagging is the director's step: name the partner pages to tag in Plánovač (type `@` and the name). The API strips `@[page id]` mentions for a development-mode app, tested 2026-11-24. The director can still edit it in Meta Business Suite → Plánovač (`https://business.facebook.com/latest/content_calendar?asset_id=<page id>`).
    - Add a photo to a scheduled post: upload it with `published=false, temporary=true`, then `POST /{post id}` with the full `attached_media[i]` list in the new order. The message stays as it is.
 7. **Learn.** If the director edits the post in Plánovač, read it back, diff it against your draft and ask about each change. Propose a rule for this skill when the reason generalizes.

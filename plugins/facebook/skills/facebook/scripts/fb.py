@@ -115,7 +115,7 @@ def main(a):
         pid, tok = page(a[1])
         n = int(a[2]) if len(a) > 2 and a[2].isdigit() else 25
         posts, path, params = [], f'/{pid}/posts', {'access_token': tok, 'limit': min(n, 100),
-                                                  'fields': 'created_time,message,permalink_url,full_picture,attachments{media_type,url}'}
+                                                  'fields': 'created_time,message,message_tags,permalink_url,full_picture,attachments{media_type,url}'}
         while len(posts) < n:
             r = graph('GET', path, **params)
             posts += r.get('data', [])
