@@ -4,17 +4,22 @@
     "name": "Dominik Voda",
     "url": "https://github.com/dominikvoda"
   },
-  "description": "Claude Code plugins by Dominik Voda: Czech disc golf (ceskydiscgolf.cz) tournament tools and Google Sheets/Gmail access.",
+  "description": "Claude Code plugins by Dominik Voda: Czech disc golf (ceskydiscgolf.cz) tournament tools, Google Sheets/Gmail and Facebook Pages access.",
   "plugins": [
     {
       "name": "ceskydiscgolf",
       "source": "./plugins/ceskydiscgolf",
-      "description": "ceskydiscgolf.cz (iDiscGolf) pro ředitele turnajů: turnaje, hráči, výsledky, propozice, flighty na přání, info e-mail hráčům, uzavření turnaje s rozhozy z Tagovačky."
+      "description": "ceskydiscgolf.cz (iDiscGolf) pro ředitele turnajů: turnaje, hráči, výsledky, propozice, flighty na přání, info e-mail hráčům, report z turnaje na Facebook, uzavření turnaje s rozhozy z Tagovačky."
     },
     {
       "name": "google",
       "source": "./plugins/google",
       "description": "Google Sheets (read-only) and Gmail (read + send with confirmation) via your own OAuth client."
+    },
+    {
+      "name": "facebook",
+      "source": "./plugins/facebook",
+      "description": "Facebook Pages via the Meta Graph API: read a page's posts and schedule new ones, with your own page token."
     }
   ]
 }

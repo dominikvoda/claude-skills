@@ -1,6 +1,6 @@
 # claude-skills
 
-Pluginy pro [Claude Code](https://code.claude.com/docs/en/overview) pro ředitele disc golfových turnajů na [ceskydiscgolf.cz](https://ceskydiscgolf.cz). Volitelně umí číst i Google tabulky, [Tagovačku](https://tagovacka.cz) a pracovat s Gmailem. *English summary [at the bottom](#english).*
+Pluginy pro [Claude Code](https://code.claude.com/docs/en/overview) pro ředitele disc golfových turnajů na [ceskydiscgolf.cz](https://ceskydiscgolf.cz). Volitelně umí číst i Google tabulky, [Tagovačku](https://tagovacka.cz), pracovat s Gmailem a s facebookovými stránkami. *English summary [at the bottom](#english).*
 
 ## Co to umí
 
@@ -10,14 +10,16 @@ Pluginy pro [Claude Code](https://code.claude.com/docs/en/overview) pro ředitel
 - **„Poskládej flighty na přání na Kamýk.“**: vezme přání hráčů z Google formuláře a registrace z ceskydiscgolf.cz a navrhne skupiny. Splní přání, zbytek hráčů namíchá podle výkonnosti, dá max 5 hráčů na jamku a větší skupiny pošle na jamky, které jsou podle historie turnajů lehčí. Potřebuje [Google přístup](#volitelně-google-tabulky-a-gmail).
 - **„Napiš info e-mail hráčům před turnajem.“**: připraví e-mail z propozic a nastavení turnaje a doptá se na to, co v nich chybí (sraz, parkování…).
 - **„Uzavři turnaj na Kamýku.“**: zkontroluje, že jsou zapsaná všechna kola, a najde shody na bedně. Když nějaké jsou, zeptá se tě, jak dopadl rozhoz, nebo výsledky vytáhne z Tagovačky. Pak turnaj uzavře a zapíše místa. Rozhozy z Tagovačky potřebují [přihlášení do Tagovačky](#volitelně-tagovačka).
+- **„Připrav post na FB z turnaje na Kamýku.“**: z výsledků, propozic a dřívějších postů stránky napíše report ve stylu stránky, z fotek na Google Disku složí album (úvodní je společná fotka) a po tvém schválení post naplánuje. Do zveřejnění ho můžeš upravit v Meta Business Suite. Potřebuje [Facebook](#volitelně-facebook) a [Google přístup](#volitelně-google-tabulky-a-gmail).
 - **„Uprav propozice“, „přidej hráče“, „označ platbu“**: správa turnajů, které řídíš.
 
 **Bez tvého souhlasu Claude nic nezmění.** Před každým zápisem na ceskydiscgolf.cz nebo odesláním e-mailu ti ukáže, co přesně udělá, a počká na tvoje „OK“.
 
 | Plugin | Skilly | K čemu |
 |---|---|---|
-| `ceskydiscgolf` | `ceskydiscgolf`, `flighty-na-prani`, `tournament-email`, `tagovacka` | turnaje, hráči, výsledky, propozice, flighty, info e-mail, uzavření turnaje, čtení Tagovačky |
-| `google` | `gsheets`, `gmail` | volitelné: čtení Google tabulek, čtení a odesílání Gmailu. Nainstaluje se samo s `ceskydiscgolf`, ale funguje až po [nastavení](#volitelně-google-tabulky-a-gmail). |
+| `ceskydiscgolf` | `ceskydiscgolf`, `flighty-na-prani`, `tournament-email`, `tournament-post`, `tagovacka` | turnaje, hráči, výsledky, propozice, flighty, info e-mail, report z turnaje na FB, uzavření turnaje, čtení Tagovačky |
+| `facebook` | `facebook` | volitelné: čtení postů a plánování nových na facebookových stránkách, které spravuješ. Instaluje se zvlášť a funguje až po [nastavení](#volitelně-facebook). |
+| `google` | `gsheets`, `gdrive`, `gmail` | volitelné: čtení Google tabulek a Disku (třeba fotek), čtení a odesílání Gmailu. Nainstaluje se samo s `ceskydiscgolf`, ale funguje až po [nastavení](#volitelně-google-tabulky-a-gmail). |
 
 ## Průvodce instalací
 
@@ -93,6 +95,38 @@ Google skripty potřebují pomocníka [uv](https://docs.astral.sh/uv/). Když ho
 
 ✅ **Ověření:** Claude vypíše seznam tvých tabulek.
 
+## Volitelně: Facebook
+
+Potřebuješ jen tehdy, když chceš, aby Claude četl starší posty na stránce, kterou spravuješ (třeba jako vzor pro nový report z turnaje), nebo na ni rovnou naplánoval nový post. **Nic se nezveřejní samo:** Claude post jen naplánuje, nejdřív za 10 minut a nejpozději za 30 dní, a jen po tvém OK. Do té doby ho v Meta Business Suite (Plánovač) můžeš upravit, přidat fotky nebo smazat.
+
+Používá se jedna společná Meta aplikace ve vývojovém režimu. Mohou ji používat jen lidé, které do ní její správce přidá (až 50 testerů), a Meta ji nemusí schvalovat.
+
+```
+/plugin install facebook@claude-skills
+```
+
+### Jednou: správce aplikace
+
+1. Na [developers.facebook.com](https://developers.facebook.com) se přihlas a zaregistruj se jako vývojář (zdarma).
+2. **My Apps → Create App.** Název obecný (třeba `Claude Local Tool`), jako use case vyber **Spravujte vše na své stránce** (*Manage everything on your Page*). Nekombinuj ho s Facebook Loginem: s ním už stránkový use case přidat nejde a use case se nedá odebrat. Business portfolio připojovat nemusíš. Aplikace zůstane v režimu **Development**, nepublikuj ji.
+3. **Use cases → Spravujte vše na své stránce → Přizpůsobit**: u `pages_read_engagement` a `pages_manage_posts` dej **Přidat**. Jsou volitelná, bez toho je Explorer nenabídne.
+4. **App roles → Roles → Add People → Testers**: přidej každého, kdo to bude používat.
+5. **App settings → Basic**: tam je *App ID* (pošli ho testerům) a *App Secret*. Secret nikam nezveřejňuj. Pošli ho soukromě jen tomu, komu nepůjde prodloužit token (krok 4 níže).
+
+Rozhraní Meta se občas mění, takže názvy tlačítek se můžou trochu lišit.
+
+### Každý uživatel
+
+1. Přijmi pozvánku do aplikace na [developers.facebook.com/requests](https://developers.facebook.com/requests) (je potřeba být zaregistrovaný jako vývojář, zdarma).
+2. Otevři [Graph API Explorer](https://developers.facebook.com/tools/explorer). Vpravo vyber *Meta App* `ceskydiscgolf posts` a *User Token*. Přidej oprávnění `pages_show_list`, `pages_read_engagement` a `pages_manage_posts` a klikni na **Generate Access Token**. V přihlašovacím okně zaškrtni stránky, které chceš používat.
+3. Napiš Claudovi *„Nastav Facebook.“* Založí soubor `.config/claude-facebook/token.txt` v domovské složce a otevře ti ho.
+4. Token z Exploreru prodluž: vlož ho do [Access Token Debuggeru](https://developers.facebook.com/tools/debug/accesstoken), klikni na **Debug** a dole na **Extend Access Token**. Nový token zkopíruj do `token.txt`, ulož a napiš Claudovi, že je hotovo. Když tlačítko Extend nevidíš, vlož do `token.txt` rovnou token z Exploreru a do `.config/claude-facebook/app.json` doplň App ID a App Secret od správce. Prodloužení pak udělá Claude.
+5. **Token nikdy nevkládej do chatu.**
+
+Cesta pro testery (pozvánka, Explorer a tlačítko Extend) zatím není vyzkoušená, ověřená je jen cesta správce aplikace se secretem. Kdyby se zasekla, napiš [issue](https://github.com/dominikvoda/claude-skills/issues).
+
+✅ **Ověření:** Claude vypíše tvoje stránky s `expires never`. Takový token stránky nevyprší, dokud nezměníš heslo k Facebooku nebo nepřijdeš o roli na stránce. Pak stačí kroky 2–4 zopakovat.
+
 ## Aktualizace
 
 Nové verze se nestahují samy. Jednou za čas v Claude Code spusť:
@@ -112,11 +146,12 @@ Nebo si zapni automatické aktualizace: napiš `/plugin`, otevři záložku **Ma
 | Přihlášení na ceskydiscgolf.cz selhává (401) | Zkontroluj login a heslo v `~/.ceskydiscgolf.json` (přihlas se s nimi na webu). Po pár neúspěších server na chvíli blokuje další pokusy. |
 | „Missing Google OAuth client …“ | Ještě nemáš hotové [Google nastavení](#volitelně-google-tabulky-a-gmail), nebo `credentials.json` není v `~/.config/claude-google/`. |
 | Google tě po týdnu znovu chce přihlásit | Aplikace je ve stavu Testing, oprav to podle bodu 4 v [Google nastavení](#volitelně-google-tabulky-a-gmail). Pak požádej Clauda, ať smaže staré Google tokeny a přihlásí tě znovu. |
+| Facebook hlásí `code 190` nebo stránka `expires` s datem | Token vypršel nebo nebyl prodloužený. Zopakuj kroky 2–4 v [nastavení Facebooku](#volitelně-facebook). |
 | Claude chce spustit příkaz a ptá se na povolení | To je normální. Čtení dat klidně povol, u zápisů si přečti, co dělá. |
 
 **Kde je to vyzkoušené:** na macOS s Claude Code. Windows (Claude Code s Git Bashem) a Linux by měly fungovat stejně, ale vyzkoušené nejsou. Když narazíš na problém, [založ issue](https://github.com/dominikvoda/claude-skills/issues).
 
-**Bezpečnost:** hesla a tokeny jsou jen u tebe v počítači (`~/.ceskydiscgolf.json`, `~/.tagovacka.json` a `~/.config/claude-google/`), nikdy v tomhle repu. Nikomu je neposílej a nevkládej je do chatu.
+**Bezpečnost:** hesla a tokeny jsou jen u tebe v počítači (`~/.ceskydiscgolf.json`, `~/.tagovacka.json`, `~/.config/claude-google/` a `~/.config/claude-facebook/`), nikdy v tomhle repu. Nikomu je neposílej a nevkládej je do chatu.
 
 ## Codex a další AI agenti
 
@@ -126,18 +161,19 @@ Skilly jsou ve standardním formátu [Agent Skills](https://agentskills.io), tak
 npx skills add dominikvoda/claude-skills
 ```
 
-Vyber skilly a agenta. `flighty-na-prani` a `tournament-email` potřebují i skill `ceskydiscgolf`, flighty navíc `gsheets`. Uzavření turnaje s rozhozy z Tagovačky potřebuje `ceskydiscgolf` i `tagovacka`. Aktualizace stáhneš příkazem `npx skills update`. Vyzkoušené je to jen v Claude Code.
+Vyber skilly a agenta. `flighty-na-prani` a `tournament-email` potřebují i skill `ceskydiscgolf`, flighty navíc `gsheets`. Uzavření turnaje s rozhozy z Tagovačky potřebuje `ceskydiscgolf` i `tagovacka`, report z turnaje `ceskydiscgolf`, `facebook` a `gdrive`. Aktualizace stáhneš příkazem `npx skills update`. Vyzkoušené je to jen v Claude Code.
 
 ---
 
 ## English
 
-Claude Code plugins for Czech disc golf tournament directors ([ceskydiscgolf.cz](https://ceskydiscgolf.cz)): registrations, propositions, flights, info e-mails and closing a tournament with podium tie-breaks read from [Tagovačka](https://tagovacka.cz). Plus Google Sheets (read-only) and Gmail.
+Claude Code plugins for Czech disc golf tournament directors ([ceskydiscgolf.cz](https://ceskydiscgolf.cz)): registrations, propositions, flights, info e-mails and closing a tournament with podium tie-breaks read from [Tagovačka](https://tagovacka.cz), and post-tournament reports for a Facebook page. Plus Google Sheets and Drive (read-only), Gmail and Facebook Pages.
 
 ```
 /plugin marketplace add dominikvoda/claude-skills
 /plugin install ceskydiscgolf@claude-skills     # also installs google (dependency)
 /plugin install google@claude-skills            # Google only
+/plugin install facebook@claude-skills          # Facebook Pages (optional)
 ```
 
 Requirements: Python 3.9+, and [uv](https://docs.astral.sh/uv/) for the Google scripts.
@@ -146,6 +182,7 @@ Requirements: Python 3.9+, and [uv](https://docs.astral.sh/uv/) for the Google s
 |---|---|
 | ceskydiscgolf.cz login | `~/.ceskydiscgolf.json`, mode 600: `{"username": "...", "password": "..."}` |
 | Tagovačka login (optional, read-only) | `~/.tagovacka.json`, mode 600: `{"email": "...", "password": "..."}` |
+| Facebook page tokens (optional) | `~/.config/claude-facebook/`: `app.json` (app id, optional secret), `token.txt` (user token pasted by the user), `pages.json` (written by `fb.py setup`). One shared Meta app in development mode; users are added as testers. Guide: [Volitelně: Facebook](#volitelně-facebook). |
 | Google OAuth client + tokens | `~/.config/claude-google/` (`credentials.json`, `sheets-token.json`, `gmail-token.json`). Bring your own Desktop OAuth client, see the Setup section of [`gsheets`](plugins/google/skills/gsheets/SKILL.md). |
 
 Updates aren't automatic for third-party marketplaces: run `/plugin marketplace update claude-skills`.
