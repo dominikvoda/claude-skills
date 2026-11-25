@@ -111,22 +111,23 @@ Používá se společná Meta aplikace **Tagovačka** v režimu Live. Facebookov
 2. **My Apps → Create App.** Název obecný (třeba `Claude Local Tool`), jako use case vyber **Spravujte vše na své stránce** (*Manage everything on your Page*). Nekombinuj ho s Facebook Loginem: s ním už stránkový use case přidat nejde a use case se nedá odebrat. Business portfolio připojovat nemusíš.
 3. **Use cases → Spravujte vše na své stránce → Přizpůsobit**: u `pages_read_engagement` a `pages_manage_posts` dej **Přidat**. Jsou volitelná, bez toho je Explorer nenabídne.
 4. **App roles → Roles → Add People → Testers**: přidej každého, kdo to bude používat.
-5. **App settings → Basic**: tam je *App ID* (pošli ho testerům) a *App Secret*. Secret nikam nezveřejňuj. Pošli ho soukromě jen tomu, komu nepůjde prodloužit token (krok 4 níže). Tady taky vyplň *Privacy Policy URL* a *User data deletion* (návod ke smazání dat), ikonu 1024×1024, kategorii a kontaktní e-mail. Bez nich aplikaci nejde přepnout do Live. Tagovačka má tyhle stránky na `https://tagovacka.cz/facebook-privacy` (smazání dat: `#smazani`).
-6. V levém menu otevři **Publish** (Publikovat), projdi požadavky, které tam Meta ukáže, a aplikaci publikuj. Žádá-li u stránkových oprávnění App Review nebo ověření firmy, nepokračuj: to je až Advanced Access.
+5. **App settings → Basic**: tam je *App ID* a *App Secret*. Secret nikomu neposílej: má ho jen server Tagovačky, který za uživatele prodlužuje tokeny. Tady taky vyplň *Privacy Policy URL* a *User data deletion* (návod ke smazání dat), ikonu 1024×1024, kategorii a kontaktní e-mail. Bez nich aplikaci nejde přepnout do Live. Tagovačka má tyhle stránky na `https://tagovacka.cz/facebook-privacy` (smazání dat: `#smazani`).
+6. Přidej produkt **Facebook Login** a v jeho nastavení zapni *Strict Mode* a *Enforce HTTPS*, do *Valid OAuth Redirect URIs* dej `https://api-discgolf-tags.dominikvoda.com/api/facebook/callback`. *Require App Secret* nech vypnuté.
+7. V levém menu otevři **Publish** (Publikovat), projdi požadavky, které tam Meta ukáže, a aplikaci publikuj. Žádá-li u stránkových oprávnění App Review nebo ověření firmy, nepokračuj: to je až Advanced Access.
 
 Rozhraní Meta se občas mění, takže názvy tlačítek se můžou trochu lišit.
 
 ### Každý uživatel
 
 1. Přijmi pozvánku do aplikace na [developers.facebook.com/requests](https://developers.facebook.com/requests) (je potřeba být zaregistrovaný jako vývojář, zdarma).
-2. Otevři [Graph API Explorer](https://developers.facebook.com/tools/explorer). Vpravo vyber *Meta App* `Tagovačka` a *User Token*. Přidej oprávnění `pages_show_list`, `pages_read_engagement` a `pages_manage_posts` a klikni na **Generate Access Token**. V přihlašovacím okně zaškrtni stránky, které chceš používat.
-3. Napiš Claudovi *„Nastav Facebook.“* Založí soubor `.config/claude-facebook/token.txt` v domovské složce a otevře ti ho.
-4. Token z Exploreru prodluž: vlož ho do [Access Token Debuggeru](https://developers.facebook.com/tools/debug/accesstoken), klikni na **Debug** a dole na **Extend Access Token**. Nový token zkopíruj do `token.txt`, ulož a napiš Claudovi, že je hotovo. Když tlačítko Extend nevidíš, vlož do `token.txt` rovnou token z Exploreru a do `.config/claude-facebook/app.json` doplň App ID a App Secret od správce. Prodloužení pak udělá Claude.
-5. **Token nikdy nevkládej do chatu.**
+2. Napiš Claudovi *„Nastav Facebook.“* Otevře ti v prohlížeči přihlášení k Facebooku. Povol aplikaci Tagovačka všechna oprávnění, která chce, a zaškrtni stránky, které chceš používat. Když prohlížeč napíše *Hotovo, můžeš zavřít okno*, je hotovo.
+3. **Token nikdy nevkládej do chatu.**
 
-Cesta pro testery (pozvánka, Explorer a tlačítko Extend) zatím není vyzkoušená, ověřená je jen cesta správce aplikace se secretem. Kdyby se zasekla, napiš [issue](https://github.com/dominikvoda/claude-skills/issues).
+Token při propojení jednou projde serverem Tagovačky, který ho prodlouží (k tomu je potřeba App Secret). Je tam zašifrovaný nejvýš 60 sekund a nikam se neukládá, viz [zásady ochrany údajů](https://tagovacka.cz/facebook-privacy).
 
-✅ **Ověření:** Claude vypíše tvoje stránky s `expires never`. Takový token stránky nevyprší, dokud nezměníš heslo k Facebooku nebo nepřijdeš o roli na stránce. Pak stačí kroky 2–4 zopakovat.
+**Když propojení v prohlížeči nejde** (třeba na počítači bez prohlížeče): v [Graph API Exploreru](https://developers.facebook.com/tools/explorer) vyber vpravo *Meta App* `Tagovačka` a *User Token*, přidej oprávnění `pages_show_list`, `pages_read_engagement` a `pages_manage_posts` a klikni na **Generate Access Token**. Token prodluž v [Access Token Debuggeru](https://developers.facebook.com/tools/debug/accesstoken) (**Debug**, dole **Extend Access Token**) a napiš Claudovi, ať použije ruční nastavení. Založí soubor `.config/claude-facebook/token.txt` v domovské složce a otevře ti ho. Prodloužený token do něj vlož, ulož a napiš Claudovi, že je hotovo.
+
+✅ **Ověření:** Claude vypíše tvoje stránky s `expires never`. Takový token stránky nevyprší, dokud nezměníš heslo k Facebooku nebo nepřijdeš o roli na stránce. Pak stačí krok 2 zopakovat.
 
 ## Aktualizace
 
@@ -183,7 +184,7 @@ Requirements: Python 3.9+, and [uv](https://docs.astral.sh/uv/) for the Google s
 |---|---|
 | ceskydiscgolf.cz login | `~/.ceskydiscgolf.json`, mode 600: `{"username": "...", "password": "..."}` |
 | Tagovačka login (optional, read-only) | `~/.tagovacka.json`, mode 600: `{"email": "...", "password": "..."}` |
-| Facebook page tokens (optional) | `~/.config/claude-facebook/`: `app.json` (app id, optional secret), `token.txt` (user token pasted by the user), `pages.json` (written by `fb.py setup`). One shared Meta app in development mode; users are added as testers. Guide: [Volitelně: Facebook](#volitelně-facebook). |
+| Facebook page tokens (optional) | `~/.config/claude-facebook/`: `pages.json` (written by `fb.py connect`, which gets a long-lived token through the Tagovačka token broker), `token.txt` (only for the paste fallback, `fb.py setup`). One shared Meta app in Live mode with Standard Access; users are added as testers. Guide: [Volitelně: Facebook](#volitelně-facebook). |
 | Google OAuth client + tokens | `~/.config/claude-google/` (`credentials.json`, `sheets-token.json`, `gmail-token.json`). Bring your own Desktop OAuth client, see the Setup section of [`gsheets`](plugins/google/skills/gsheets/SKILL.md). |
 
 Updates aren't automatic for third-party marketplaces: run `/plugin marketplace update claude-skills`.
