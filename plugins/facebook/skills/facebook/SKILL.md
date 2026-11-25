@@ -29,7 +29,7 @@ FB_GO=1 python3 -I scripts/fb.py delete <page> <post id>
 
 ## Setup
 
-The app is the Meta app **Tagovačka** in **Live** mode with Standard Access only: only people with a role on it (admin, developer, tester) can grant its page permissions, and no Meta review is needed. Letting anyone in needs Advanced Access (App Review + Business Verification), not done yet. The step-by-step guide for the app owner and for each user is in the repo README, section "Volitelně: Facebook".
+The app is the Meta app **Tagovačka** in **Live** mode with Standard Access only: only people with a role on it (admin, developer, tester) can grant its page permissions, and no Meta review is needed. Letting anyone in needs Advanced Access (App Review + Business Verification), not done yet. The user guide is in the repo README, section "Volitelně: Facebook". The app owner's console steps are in git history (commit 50e035a).
 
 **`connect` first.** It opens the Facebook login in the browser through the Tagovačka token broker (`https://api-discgolf-tags.dominikvoda.com`, `FB_BROKER` overrides), which holds the app secret and turns the login into a long-lived token. The CLI receives it on a `127.0.0.1` loopback redirect, protected by PKCE. The user approves the app and ticks the pages to use, then the browser says *Hotovo, můžeš zavřít okno*. `connect` saves a token per page to `pages.json` and prints each page's expiry. `expires never` is the goal. It waits up to 5 minutes for the browser, so give the Bash call a timeout of at least 300000 ms and show the user the printed URL in case no browser opens.
 

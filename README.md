@@ -117,33 +117,17 @@ Google skripty potřebují pomocníka [uv](https://docs.astral.sh/uv/). Když ho
 
 Potřebuješ jen tehdy, když chceš, aby Claude četl starší posty na stránce, kterou spravuješ (třeba jako vzor pro nový report z turnaje), nebo na ni rovnou naplánoval nový post. **Nic se nezveřejní samo:** Claude post jen naplánuje, nejdřív za 10 minut a nejpozději za 30 dní, a jen po tvém OK. Do té doby ho v Meta Business Suite (Plánovač) můžeš upravit, přidat fotky nebo smazat.
 
-Používá se společná Meta aplikace **Tagovačka** v režimu Live. Facebookové oprávnění ke stránkám má zatím jen základní úroveň (Standard Access), takže ji můžou používat jen lidé, které do ní správce přidá jako testery. Schválení od Meta (App Review) zatím potřeba není.
+Používá se společná Meta aplikace **Tagovačka**. Zatím ji můžou používat jen lidé přidaní jako testeři: napiš [autorovi](https://github.com/dominikvoda), ať tě přidá.
 
 ```
 /plugin install facebook@claude-skills
 ```
 
-### Jednou: správce aplikace
-
-Tuhle část dělá jen správce aplikace Tagovačka. Když tě jen přidal jako testera, přeskoč rovnou na [Každý uživatel](#každý-uživatel).
-
-1. Na [developers.facebook.com](https://developers.facebook.com) se přihlas a zaregistruj se jako vývojář (zdarma).
-2. **My Apps → Create App.** Název `Tagovačka` (uživatelé ho uvidí při přihlášení), jako use case vyber **Spravujte vše na své stránce** (*Manage everything on your Page*). Nepřidávej k němu use case s Facebook Loginem (přihlašování uživatelů): s ním už stránkový use case přidat nejde a use case se nedá odebrat. Produkt Facebook Login for Business z kroku 6 je něco jiného a ten přidat jde. Business portfolio připojovat nemusíš.
-3. **Use cases → Spravujte vše na své stránce → Přizpůsobit**: u `pages_read_engagement` a `pages_manage_posts` dej **Přidat**. Jsou volitelná, bez toho je Explorer nenabídne.
-4. **App roles → Roles → Add People → Testers**: přidej každého, kdo to bude používat.
-5. **App settings → Basic**: tam je *App ID* a *App Secret*. Secret nikomu neposílej: má ho jen server Tagovačky, který za uživatele prodlužuje tokeny. Tady taky vyplň *Privacy Policy URL* a *User data deletion* (návod ke smazání dat), ikonu 1024×1024, kategorii a kontaktní e-mail. Bez nich aplikaci nejde přepnout do Live. Tagovačka má tyhle stránky na `https://tagovacka.cz/facebook-privacy` (smazání dat: `#smazani`).
-6. **App settings → Basic**: do *App Domains* přidej `api-discgolf-tags.dominikvoda.com` (případně nejdřív *Add platform → Website* se *Site URL* `https://api-discgolf-tags.dominikvoda.com/`). Pak přidej produkt **Facebook Login for Business**. V jeho nastavení zapni *Strict Mode* a *Enforce HTTPS*, do *Valid OAuth Redirect URIs* dej `https://api-discgolf-tags.dominikvoda.com/api/facebook/callback` a *Require App Secret* nech vypnuté. V *Configurations* vytvoř konfiguraci s typem tokenu *User access token* a oprávněními `pages_show_list`, `pages_read_engagement` a `pages_manage_posts`. Její *Configuration ID* patří na server do `FACEBOOK_LOGIN_CONFIG_ID`.
-7. V levém menu otevři **Publish** (Publikovat), projdi požadavky, které tam Meta ukáže, a aplikaci publikuj. Žádá-li u stránkových oprávnění App Review nebo ověření firmy, nepokračuj: to je až Advanced Access.
-
-Rozhraní Meta se občas mění, takže názvy tlačítek se můžou trochu lišit.
-
-### Každý uživatel
-
 1. Přijmi pozvánku do aplikace na [developers.facebook.com/requests](https://developers.facebook.com/requests) (je potřeba být zaregistrovaný jako vývojář, zdarma).
 2. Napiš Claudovi *„Nastav Facebook.“* Otevře ti v prohlížeči přihlášení k Facebooku. Povol aplikaci Tagovačka všechna oprávnění, která chce, a zaškrtni stránky, které chceš používat. Když prohlížeč napíše *Hotovo, můžeš zavřít okno*, je hotovo.
 3. **Token nikdy nevkládej do chatu.**
 
-Token při propojení jednou projde serverem Tagovačky, který ho prodlouží (k tomu je potřeba App Secret). Je tam zašifrovaný nejvýš 60 sekund a nikam se neukládá, viz [zásady ochrany údajů](https://tagovacka.cz/facebook-privacy).
+Token při propojení jednou projde serverem Tagovačky, který ho prodlouží. Je tam zašifrovaný nejvýš 60 sekund a nikam se neukládá, viz [zásady ochrany údajů](https://tagovacka.cz/facebook-privacy).
 
 **Když propojení v prohlížeči nejde** (třeba na počítači bez prohlížeče): v [Graph API Exploreru](https://developers.facebook.com/tools/explorer) vyber vpravo *Meta App* `Tagovačka` a *User Token*, přidej oprávnění `pages_show_list`, `pages_read_engagement` a `pages_manage_posts` a klikni na **Generate Access Token**. Token prodluž v [Access Token Debuggeru](https://developers.facebook.com/tools/debug/accesstoken) (**Debug**, dole **Extend Access Token**) a napiš Claudovi, ať použije ruční nastavení. Založí soubor `.config/claude-facebook/token.txt` v domovské složce a otevře ti ho. Prodloužený token do něj vlož, ulož a napiš Claudovi, že je hotovo.
 
@@ -168,7 +152,7 @@ Nebo si zapni automatické aktualizace: napiš `/plugin`, otevři záložku **Ma
 | Přihlášení na ceskydiscgolf.cz selhává (401) | Zkontroluj login a heslo v `~/.ceskydiscgolf.json` (přihlas se s nimi na webu). Po pár neúspěších server na chvíli blokuje další pokusy. |
 | „Missing Google OAuth client …“ | Ještě nemáš hotové [Google nastavení](#volitelně-google-tabulky-a-gmail), nebo `credentials.json` není v `~/.config/claude-google/`. |
 | Google tě po týdnu znovu chce přihlásit | Aplikace je ve stavu Testing, oprav to podle bodu 4 v [Google nastavení](#volitelně-google-tabulky-a-gmail). Pak požádej Clauda, ať smaže staré Google tokeny a přihlásí tě znovu. |
-| Facebook hlásí `code 190` nebo stránka `expires` s datem | Token vypršel nebo nebyl prodloužený. Napiš Claudovi *„Nastav Facebook.“* (krok 2 v části [Každý uživatel](#každý-uživatel)). |
+| Facebook hlásí `code 190` nebo stránka `expires` s datem | Token vypršel nebo nebyl prodloužený. Napiš Claudovi *„Nastav Facebook.“* (krok 2 v [nastavení Facebooku](#volitelně-facebook)). |
 | Facebook hlásí `code 200` nebo `code 10` | Chybí oprávnění. Napiš Claudovi *„Nastav Facebook.“* a v přihlášení povol všechna oprávnění, která aplikace chce. |
 | Claude chce spustit příkaz a ptá se na povolení | To je normální. Čtení dat klidně povol, u zápisů si přečti, co dělá. |
 
