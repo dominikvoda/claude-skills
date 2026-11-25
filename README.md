@@ -1,19 +1,37 @@
 # claude-skills
 
-Pluginy pro [Claude Code](https://code.claude.com/docs/en/overview) pro ředitele disc golfových turnajů na [ceskydiscgolf.cz](https://ceskydiscgolf.cz). Volitelně umí číst i Google tabulky, [Tagovačku](https://tagovacka.cz), pracovat s Gmailem a s facebookovými stránkami. *English summary [at the bottom](#english).*
+Pluginy pro [Claude Code](https://code.claude.com/docs/en/overview) pro ředitele disc golfových turnajů na [ceskydiscgolf.cz](https://ceskydiscgolf.cz). Volitelně umí číst i Google tabulky a [Tagovačku](https://tagovacka.cz), zakládat a upravovat Google formuláře, pracovat s Gmailem a s facebookovými stránkami. *English summary [at the bottom](#english).*
 
 ## Co to umí
 
-Řekneš Claudovi běžnou češtinou, co potřebuješ, a on si data dohledá sám:
+Řekneš Claudovi běžnou češtinou, co potřebuješ, a on si data dohledá sám. V závorce jsou skilly, které se k tomu použijí.
 
-- **„Kolik lidí je přihlášených na můj turnaj v Nučicích a kdo ještě nezaplatil?“**: přečte registrace z ceskydiscgolf.cz.
-- **„Poskládej flighty na přání na Kamýk.“**: vezme přání hráčů z Google formuláře a registrace z ceskydiscgolf.cz a navrhne skupiny. Splní přání, zbytek hráčů namíchá podle výkonnosti, dá max 5 hráčů na jamku a větší skupiny pošle na jamky, které jsou podle historie turnajů lehčí. Potřebuje [Google přístup](#volitelně-google-tabulky-a-gmail).
-- **„Napiš info e-mail hráčům před turnajem.“**: připraví e-mail z propozic a nastavení turnaje a doptá se na to, co v nich chybí (sraz, parkování…).
-- **„Uzavři turnaj na Kamýku.“**: zkontroluje, že jsou zapsaná všechna kola, a najde shody na bedně. Když nějaké jsou, zeptá se tě, jak dopadl rozhoz, nebo výsledky vytáhne z Tagovačky. Pak turnaj uzavře a zapíše místa. Rozhozy z Tagovačky potřebují [přihlášení do Tagovačky](#volitelně-tagovačka).
-- **„Připrav post na FB z turnaje na Kamýku.“**: z výsledků, propozic a dřívějších postů stránky napíše report ve stylu stránky, z fotek na Google Disku složí album (úvodní je společná fotka) a po tvém schválení post naplánuje. Do zveřejnění ho můžeš upravit v Meta Business Suite. Potřebuje [Facebook](#volitelně-facebook) a [Google přístup](#volitelně-google-tabulky-a-gmail).
-- **„Uprav propozice“, „přidej hráče“, „označ platbu“**: správa turnajů, které řídíš.
+**Turnaje na ceskydiscgolf.cz**
 
-**Bez tvého souhlasu Claude nic nezmění.** Před každým zápisem na ceskydiscgolf.cz nebo odesláním e-mailu ti ukáže, co přesně udělá, a počká na tvoje „OK“.
+- **„Kolik lidí je přihlášených na můj turnaj v Nučicích a kdo ještě nezaplatil?“**: přečte registrace a platby (`ceskydiscgolf`).
+- **„Jaký rating má Jan Novák a jak dopadl na posledních turnajích?“**: najde hráče, jeho rating a výsledky (`ceskydiscgolf`).
+- **„Uprav propozice“, „přidej hráče“, „označ platbu“**: správa turnajů, které řídíš (`ceskydiscgolf`).
+- **„Napiš info e-mail hráčům před turnajem.“**: připraví e-mail z propozic a nastavení turnaje a doptá se na to, co v nich chybí (sraz, parkování…). Odešleš ho sám (`tournament-email`).
+- **„Uzavři turnaj na Kamýku.“**: zkontroluje, že jsou zapsaná všechna kola, a najde shody na bedně. Když nějaké jsou, zeptá se tě, jak dopadl rozhoz, nebo výsledky vytáhne z Tagovačky. Pak turnaj uzavře a zapíše místa (`ceskydiscgolf`, `tagovacka`). Rozhozy z Tagovačky potřebují [přihlášení do Tagovačky](#volitelně-tagovačka).
+
+**Kombinace více služeb**
+
+- **„Poskládej flighty na přání na Kamýk.“**: vezme přání hráčů z tabulky odpovědí Google formuláře a registrace z ceskydiscgolf.cz a navrhne skupiny. Splní přání, zbytek hráčů namíchá podle výkonnosti, dá max 5 hráčů na jamku a větší skupiny pošle na jamky, které jsou podle historie turnajů lehčí (`flighty-na-prani`, `gsheets`, `ceskydiscgolf`).
+- **„Založ formulář Flighty na přání pro další turnaj série se stejnými otázkami jako minule.“** a po uzávěrce **„poskládej podle něj flighty“**: vezme otázky ze starého formuláře, založí nový a nechá ho nezveřejněný, dokud neřekneš. Tabulku pro odpovědi s ním propojíš ručně v záložce Odpovědi (`gforms`, pak `gsheets`, `flighty-na-prani`).
+- **„Připrav post na FB z turnaje na Kamýku.“**: z výsledků, propozic a dřívějších postů stránky napíše report ve stylu stránky, z fotek na Google Disku složí album (úvodní je společná fotka) a po tvém schválení post naplánuje. Do zveřejnění ho můžeš upravit v Meta Business Suite (`tournament-post`, `ceskydiscgolf`, `gdrive`, `facebook`).
+- **„Najdi v Gmailu, kdo se omluvil z turnaje v Nučicích, a odhlas je.“**: přečte e-maily a navrhne odhlášení těch hráčů (`gmail`, `ceskydiscgolf`).
+
+**Google a Facebook samostatně**
+
+- **„Kolik juniorů je v tabulce přihlášek do klubu?“**: přečte Google tabulku (`gsheets`).
+- **„Stáhni fotky z téhle složky na Disku.“**: vypíše a stáhne soubory z Google Disku (`gdrive`).
+- **„Udělej anketu po turnaji: hodnocení hřiště 1–5, co se líbilo a co zlepšit.“**: založí Google formulář, přidá, upraví nebo smaže otázky a na požádání ho zveřejní (`gforms`).
+- **„Odpověz Petrovi na mail o termínu ligy, že…“**: najde e-mail a pošle odpověď (`gmail`).
+- **„Ukaž poslední posty na stránce ligy.“**: přečte posty na stránce, kterou spravuješ, nebo naplánuje nový (`facebook`).
+
+Služby Googlu potřebují [Google přístup](#volitelně-google-tabulky-a-gmail), Facebook potřebuje [nastavení Facebooku](#volitelně-facebook).
+
+**Bez tvého souhlasu Claude nic nezmění.** Před každým zápisem na ceskydiscgolf.cz, úpravou formuláře nebo odesláním e-mailu ti ukáže, co přesně udělá, a počká na tvoje „OK“.
 
 | Plugin | Skilly | K čemu |
 |---|---|---|
@@ -77,7 +95,7 @@ Claude z Tagovačky jen čte. Rozhozy zadáváš v Tagovačce sám.
 
 ## Volitelně: Google tabulky a Gmail
 
-Tohle nastavení potřebuješ, jen když chceš, aby Claude četl tvoje Google tabulky (třeba odpovědi z formuláře „flight na přání“) nebo pracoval s Gmailem.
+Tohle nastavení potřebuješ, jen když chceš, aby Claude četl tvoje Google tabulky (třeba odpovědi z formuláře „flight na přání“), zakládal a upravoval Google formuláře nebo pracoval s Gmailem.
 
 Google nedovolí jen tak cizímu programu číst tvoje data. Proto si vytvoříš vlastní malou „aplikaci“, které to povolíš. Uvidí jen to, k čemu máš přístup ty, a nikdo jiný ji používat nebude. Nastavení zabere asi 10 minut a dělá se jednou.
 

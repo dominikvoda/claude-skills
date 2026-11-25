@@ -4,7 +4,7 @@
     "name": "Dominik Voda",
     "url": "https://github.com/dominikvoda"
   },
-  "description": "Claude Code plugins by Dominik Voda: Czech disc golf (ceskydiscgolf.cz) tournament tools, Google Sheets/Gmail and Facebook Pages access.",
+  "description": "Claude Code plugins by Dominik Voda: Czech disc golf (ceskydiscgolf.cz) tournament tools, Google Sheets/Drive/Forms/Gmail and Facebook Pages access.",
   "plugins": [
     {
       "name": "ceskydiscgolf",
@@ -14,7 +14,7 @@
     {
       "name": "google",
       "source": "./plugins/google",
-      "description": "Google Sheets (read-only) and Gmail (read + send with confirmation) via your own OAuth client."
+      "description": "Google Sheets and Drive (read-only), Google Forms (create and edit) and Gmail (read + send with confirmation) via your own OAuth client."
     },
     {
       "name": "facebook",
