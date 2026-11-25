@@ -19,7 +19,7 @@ Pluginy pro [Claude Code](https://code.claude.com/docs/en/overview) pro ředitel
 |---|---|---|
 | `ceskydiscgolf` | `ceskydiscgolf`, `flighty-na-prani`, `tournament-email`, `tournament-post`, `tagovacka` | turnaje, hráči, výsledky, propozice, flighty, info e-mail, report z turnaje na FB, uzavření turnaje, čtení Tagovačky |
 | `facebook` | `facebook` | volitelné: čtení postů a plánování nových na facebookových stránkách, které spravuješ. Instaluje se zvlášť a funguje až po [nastavení](#volitelně-facebook). |
-| `google` | `gsheets`, `gdrive`, `gmail` | volitelné: čtení Google tabulek a Disku (třeba fotek), čtení a odesílání Gmailu. Nainstaluje se samo s `ceskydiscgolf`, ale funguje až po [nastavení](#volitelně-google-tabulky-a-gmail). |
+| `google` | `gsheets`, `gdrive`, `gforms`, `gmail` | volitelné: čtení Google tabulek a Disku (třeba fotek), zakládání a úprava Google formulářů, čtení a odesílání Gmailu. Nainstaluje se samo s `ceskydiscgolf`, ale funguje až po [nastavení](#volitelně-google-tabulky-a-gmail). |
 
 ## Průvodce instalací
 
@@ -84,7 +84,7 @@ Google nedovolí jen tak cizímu programu číst tvoje data. Proto si vytvoří�
 Google skripty potřebují pomocníka [uv](https://docs.astral.sh/uv/). Když ho nemáš, Claude ti ho pomůže nainstalovat.
 
 1. Otevři [Google Cloud Console](https://console.cloud.google.com/), přihlas se svým Google účtem a vytvoř **nový projekt** (jméno je jedno, třeba `claude`).
-2. V horním vyhledávání postupně najdi a **zapni** (Enable) **Google Sheets API**, **Google Drive API** a pokud chceš e-maily, i **Gmail API**.
+2. V horním vyhledávání postupně najdi a **zapni** (Enable) **Google Sheets API**, **Google Drive API**, pokud chceš upravovat formuláře, i **Google Forms API**, a pokud chceš e-maily, i **Gmail API**.
 3. Otevři **Google Auth Platform** a projdi úvodní nastavení. Vyplníš název aplikace a svůj e-mail, typ uživatelů zvol **External**.
 4. V části **Audience** klikni na **Publish app**, aby stav byl **In production**. Bez toho tě Google každých 7 dní odhlásí.
 5. V části **Clients** klikni na **Create client**, typ **Desktop app**, a pak **stáhni JSON** (Download JSON).
@@ -169,7 +169,7 @@ Vyber skilly a agenta. `flighty-na-prani` a `tournament-email` potřebují i ski
 
 ## English
 
-Claude Code plugins for Czech disc golf tournament directors ([ceskydiscgolf.cz](https://ceskydiscgolf.cz)): registrations, propositions, flights, info e-mails and closing a tournament with podium tie-breaks read from [Tagovačka](https://tagovacka.cz), and post-tournament reports for a Facebook page. Plus Google Sheets and Drive (read-only), Gmail and Facebook Pages.
+Claude Code plugins for Czech disc golf tournament directors ([ceskydiscgolf.cz](https://ceskydiscgolf.cz)): registrations, propositions, flights, info e-mails and closing a tournament with podium tie-breaks read from [Tagovačka](https://tagovacka.cz), and post-tournament reports for a Facebook page. Plus Google Sheets and Drive (read-only), Google Forms (create and edit), Gmail and Facebook Pages.
 
 ```
 /plugin marketplace add dominikvoda/claude-skills
@@ -185,7 +185,7 @@ Requirements: Python 3.9+, and [uv](https://docs.astral.sh/uv/) for the Google s
 | ceskydiscgolf.cz login | `~/.ceskydiscgolf.json`, mode 600: `{"username": "...", "password": "..."}` |
 | Tagovačka login (optional, read-only) | `~/.tagovacka.json`, mode 600: `{"email": "...", "password": "..."}` |
 | Facebook page tokens (optional) | `~/.config/claude-facebook/`: `pages.json` (written by `fb.py connect`, which gets a long-lived token through the Tagovačka token broker), `token.txt` (only for the paste fallback, `fb.py setup`). One shared Meta app in Live mode with Standard Access; users are added as testers. Guide: [Volitelně: Facebook](#volitelně-facebook). |
-| Google OAuth client + tokens | `~/.config/claude-google/` (`credentials.json`, `sheets-token.json`, `gmail-token.json`). Bring your own Desktop OAuth client, see the Setup section of [`gsheets`](plugins/google/skills/gsheets/SKILL.md). |
+| Google OAuth client + tokens | `~/.config/claude-google/` (`credentials.json`, `sheets-token.json`, `forms-token.json`, `gmail-token.json`). Bring your own Desktop OAuth client, see the Setup section of [`gsheets`](plugins/google/skills/gsheets/SKILL.md). |
 
 Updates aren't automatic for third-party marketplaces: run `/plugin marketplace update claude-skills`.
 

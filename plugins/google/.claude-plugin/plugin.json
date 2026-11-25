@@ -1,6 +1,6 @@
 {
   "name": "google",
-  "description": "Google Sheets (read-only) and Gmail (read + send with confirmation) via your own OAuth client.",
+  "description": "Google Sheets and Drive (read-only), Google Forms (create and edit) and Gmail (read + send with confirmation) via your own OAuth client.",
   "author": { "name": "Dominik Voda" },
   "repository": "https://github.com/dominikvoda/claude-skills",
   "license": "MIT"
