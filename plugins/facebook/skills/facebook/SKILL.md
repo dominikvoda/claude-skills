@@ -24,11 +24,11 @@ FB_GO=1 python3 -I scripts/fb.py delete <page> <post id>
 - **Writes:** `schedule` and `delete`. Show the exact text, the page and the time, wait for an explicit OK, then run it with `FB_GO=1`. It creates a **scheduled** post (10 minutes to 30 days ahead), which the user can still edit, add photos to, or delete in Meta Business Suite → Plánovač (`https://business.facebook.com/latest/content_calendar?asset_id=<page id>`) before it goes out. Prefer a time at least an hour ahead so there is room to review.
 - **Album:** `album.json` is `[{"file": "a.jpg", "caption": "..."}]`, JPEG or PNG only. Convert HEIC from iPhones with `sips -s format jpeg -s formatOptions 90 -Z 2048 <heic> --out <dir>/<name>.jpg`. The photos upload as `published=false, temporary=true` and attach to the scheduled post in that order. To add a photo later, upload it the same way and `POST /{post id}` with the whole `attached_media[i]` list; the message is kept.
 - **Edit the text** of a scheduled post with `POST /{post id}` and `message`; the album and the time stay. A read right after a write can show the album one photo short, so re-read after ~20 s before you conclude anything.
-- **Tagging other pages** (`@[page id]` in `message`) is stripped by the API for a development-mode app (tested 2026-11-24). The user tags them in Plánovač: name the pages to tag.
+- **Tagging other pages** (`@[page id]` in `message`) is stripped by the API, in development mode and in Live with Standard Access too (tested 2026-11-24 and 2026-11-25). The user tags them in Plánovač: name the pages to tag.
 
 ## Setup
 
-The app is a Meta app in **development mode**. Only people with a role on it (admin, developer, tester; up to 50 testers) can use it, and no Meta review is needed. The step-by-step guide for the app owner and for each user is in the repo README, section "Volitelně: Facebook".
+The app is the Meta app **Tagovačka** in **Live** mode with Standard Access only: only people with a role on it (admin, developer, tester) can grant its page permissions, and no Meta review is needed. Letting anyone in needs Advanced Access (App Review + Business Verification), not done yet. The step-by-step guide for the app owner and for each user is in the repo README, section "Volitelně: Facebook".
 
 `setup` reads `token.txt`, and with `app_secret` set in `app.json` exchanges the short token (1–2 h) for a long-lived one first. It then saves a token per page to `pages.json`, empties `token.txt` and prints each page's expiry. `expires never` is the goal. A dated expiry means the user token was short-lived: ask the app owner for the secret, or try Access Token Debugger → Extend Access Token (untested for testers), then repeat setup.
 

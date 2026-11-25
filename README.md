@@ -99,7 +99,7 @@ Google skripty potřebují pomocníka [uv](https://docs.astral.sh/uv/). Když ho
 
 Potřebuješ jen tehdy, když chceš, aby Claude četl starší posty na stránce, kterou spravuješ (třeba jako vzor pro nový report z turnaje), nebo na ni rovnou naplánoval nový post. **Nic se nezveřejní samo:** Claude post jen naplánuje, nejdřív za 10 minut a nejpozději za 30 dní, a jen po tvém OK. Do té doby ho v Meta Business Suite (Plánovač) můžeš upravit, přidat fotky nebo smazat.
 
-Používá se jedna společná Meta aplikace ve vývojovém režimu. Mohou ji používat jen lidé, které do ní její správce přidá (až 50 testerů), a Meta ji nemusí schvalovat.
+Používá se společná Meta aplikace **Tagovačka** v režimu Live. Facebookové oprávnění ke stránkám má zatím jen základní úroveň (Standard Access), takže ji můžou používat jen lidé, které do ní správce přidá jako testery. Schválení od Meta (App Review) zatím potřeba není.
 
 ```
 /plugin install facebook@claude-skills
@@ -108,17 +108,18 @@ Používá se jedna společná Meta aplikace ve vývojovém režimu. Mohou ji po
 ### Jednou: správce aplikace
 
 1. Na [developers.facebook.com](https://developers.facebook.com) se přihlas a zaregistruj se jako vývojář (zdarma).
-2. **My Apps → Create App.** Název obecný (třeba `Claude Local Tool`), jako use case vyber **Spravujte vše na své stránce** (*Manage everything on your Page*). Nekombinuj ho s Facebook Loginem: s ním už stránkový use case přidat nejde a use case se nedá odebrat. Business portfolio připojovat nemusíš. Aplikace zůstane v režimu **Development**, nepublikuj ji.
+2. **My Apps → Create App.** Název obecný (třeba `Claude Local Tool`), jako use case vyber **Spravujte vše na své stránce** (*Manage everything on your Page*). Nekombinuj ho s Facebook Loginem: s ním už stránkový use case přidat nejde a use case se nedá odebrat. Business portfolio připojovat nemusíš.
 3. **Use cases → Spravujte vše na své stránce → Přizpůsobit**: u `pages_read_engagement` a `pages_manage_posts` dej **Přidat**. Jsou volitelná, bez toho je Explorer nenabídne.
 4. **App roles → Roles → Add People → Testers**: přidej každého, kdo to bude používat.
-5. **App settings → Basic**: tam je *App ID* (pošli ho testerům) a *App Secret*. Secret nikam nezveřejňuj. Pošli ho soukromě jen tomu, komu nepůjde prodloužit token (krok 4 níže).
+5. **App settings → Basic**: tam je *App ID* (pošli ho testerům) a *App Secret*. Secret nikam nezveřejňuj. Pošli ho soukromě jen tomu, komu nepůjde prodloužit token (krok 4 níže). Tady taky vyplň *Privacy Policy URL* a *User data deletion* (návod ke smazání dat), ikonu 1024×1024, kategorii a kontaktní e-mail. Bez nich aplikaci nejde přepnout do Live. Tagovačka má tyhle stránky na `https://tagovacka.cz/facebook-privacy` (smazání dat: `#smazani`).
+6. V levém menu otevři **Publish** (Publikovat), projdi požadavky, které tam Meta ukáže, a aplikaci publikuj. Žádá-li u stránkových oprávnění App Review nebo ověření firmy, nepokračuj: to je až Advanced Access.
 
 Rozhraní Meta se občas mění, takže názvy tlačítek se můžou trochu lišit.
 
 ### Každý uživatel
 
 1. Přijmi pozvánku do aplikace na [developers.facebook.com/requests](https://developers.facebook.com/requests) (je potřeba být zaregistrovaný jako vývojář, zdarma).
-2. Otevři [Graph API Explorer](https://developers.facebook.com/tools/explorer). Vpravo vyber *Meta App* `ceskydiscgolf posts` a *User Token*. Přidej oprávnění `pages_show_list`, `pages_read_engagement` a `pages_manage_posts` a klikni na **Generate Access Token**. V přihlašovacím okně zaškrtni stránky, které chceš používat.
+2. Otevři [Graph API Explorer](https://developers.facebook.com/tools/explorer). Vpravo vyber *Meta App* `Tagovačka` a *User Token*. Přidej oprávnění `pages_show_list`, `pages_read_engagement` a `pages_manage_posts` a klikni na **Generate Access Token**. V přihlašovacím okně zaškrtni stránky, které chceš používat.
 3. Napiš Claudovi *„Nastav Facebook.“* Založí soubor `.config/claude-facebook/token.txt` v domovské složce a otevře ti ho.
 4. Token z Exploreru prodluž: vlož ho do [Access Token Debuggeru](https://developers.facebook.com/tools/debug/accesstoken), klikni na **Debug** a dole na **Extend Access Token**. Nový token zkopíruj do `token.txt`, ulož a napiš Claudovi, že je hotovo. Když tlačítko Extend nevidíš, vlož do `token.txt` rovnou token z Exploreru a do `.config/claude-facebook/app.json` doplň App ID a App Secret od správce. Prodloužení pak udělá Claude.
 5. **Token nikdy nevkládej do chatu.**
