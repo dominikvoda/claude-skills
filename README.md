@@ -125,8 +125,10 @@ Používá se společná Meta aplikace **Tagovačka** v režimu Live. Facebookov
 
 ### Jednou: správce aplikace
 
+Tuhle část dělá jen správce aplikace Tagovačka. Když tě jen přidal jako testera, přeskoč rovnou na [Každý uživatel](#každý-uživatel).
+
 1. Na [developers.facebook.com](https://developers.facebook.com) se přihlas a zaregistruj se jako vývojář (zdarma).
-2. **My Apps → Create App.** Název obecný (třeba `Claude Local Tool`), jako use case vyber **Spravujte vše na své stránce** (*Manage everything on your Page*). Nekombinuj ho s Facebook Loginem: s ním už stránkový use case přidat nejde a use case se nedá odebrat. Business portfolio připojovat nemusíš.
+2. **My Apps → Create App.** Název `Tagovačka` (uživatelé ho uvidí při přihlášení), jako use case vyber **Spravujte vše na své stránce** (*Manage everything on your Page*). Nepřidávej k němu use case s Facebook Loginem (přihlašování uživatelů): s ním už stránkový use case přidat nejde a use case se nedá odebrat. Produkt Facebook Login for Business z kroku 6 je něco jiného a ten přidat jde. Business portfolio připojovat nemusíš.
 3. **Use cases → Spravujte vše na své stránce → Přizpůsobit**: u `pages_read_engagement` a `pages_manage_posts` dej **Přidat**. Jsou volitelná, bez toho je Explorer nenabídne.
 4. **App roles → Roles → Add People → Testers**: přidej každého, kdo to bude používat.
 5. **App settings → Basic**: tam je *App ID* a *App Secret*. Secret nikomu neposílej: má ho jen server Tagovačky, který za uživatele prodlužuje tokeny. Tady taky vyplň *Privacy Policy URL* a *User data deletion* (návod ke smazání dat), ikonu 1024×1024, kategorii a kontaktní e-mail. Bez nich aplikaci nejde přepnout do Live. Tagovačka má tyhle stránky na `https://tagovacka.cz/facebook-privacy` (smazání dat: `#smazani`).
@@ -166,7 +168,8 @@ Nebo si zapni automatické aktualizace: napiš `/plugin`, otevři záložku **Ma
 | Přihlášení na ceskydiscgolf.cz selhává (401) | Zkontroluj login a heslo v `~/.ceskydiscgolf.json` (přihlas se s nimi na webu). Po pár neúspěších server na chvíli blokuje další pokusy. |
 | „Missing Google OAuth client …“ | Ještě nemáš hotové [Google nastavení](#volitelně-google-tabulky-a-gmail), nebo `credentials.json` není v `~/.config/claude-google/`. |
 | Google tě po týdnu znovu chce přihlásit | Aplikace je ve stavu Testing, oprav to podle bodu 4 v [Google nastavení](#volitelně-google-tabulky-a-gmail). Pak požádej Clauda, ať smaže staré Google tokeny a přihlásí tě znovu. |
-| Facebook hlásí `code 190` nebo stránka `expires` s datem | Token vypršel nebo nebyl prodloužený. Zopakuj kroky 2–4 v [nastavení Facebooku](#volitelně-facebook). |
+| Facebook hlásí `code 190` nebo stránka `expires` s datem | Token vypršel nebo nebyl prodloužený. Napiš Claudovi *„Nastav Facebook.“* (krok 2 v části [Každý uživatel](#každý-uživatel)). |
+| Facebook hlásí `code 200` nebo `code 10` | Chybí oprávnění. Napiš Claudovi *„Nastav Facebook.“* a v přihlášení povol všechna oprávnění, která aplikace chce. |
 | Claude chce spustit příkaz a ptá se na povolení | To je normální. Čtení dat klidně povol, u zápisů si přečti, co dělá. |
 
 **Kde je to vyzkoušené:** na macOS s Claude Code. Windows (Claude Code s Git Bashem) a Linux by měly fungovat stejně, ale vyzkoušené nejsou. Když narazíš na problém, [založ issue](https://github.com/dominikvoda/claude-skills/issues).

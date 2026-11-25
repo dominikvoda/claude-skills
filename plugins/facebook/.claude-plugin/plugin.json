@@ -1,6 +1,6 @@
 {
   "name": "facebook",
-  "description": "Facebook Pages via the Meta Graph API: read a page's posts and schedule new ones, with your own page token.",
+  "description": "Facebook Pages via the Meta Graph API: read a page's posts and schedule new ones, through the shared Tagovačka Meta app (you get added as a tester).",
   "author": { "name": "Dominik Voda" },
   "repository": "https://github.com/dominikvoda/claude-skills",
   "license": "MIT"
