@@ -127,11 +127,7 @@ Používá se společná Meta aplikace **Tagovačka**. Zatím ji můžou použí
 2. Napiš Claudovi *„Nastav Facebook.“* Otevře ti v prohlížeči přihlášení k Facebooku. Povol aplikaci Tagovačka všechna oprávnění, která chce, a zaškrtni stránky, které chceš používat. Když prohlížeč napíše *Hotovo, můžeš zavřít okno*, je hotovo.
 3. **Token nikdy nevkládej do chatu.**
 
-Token při propojení jednou projde serverem Tagovačky, který ho prodlouží. Je tam zašifrovaný nejvýš 60 sekund a nikam se neukládá, viz [zásady ochrany údajů](https://tagovacka.cz/facebook-privacy).
-
-**Když propojení v prohlížeči nejde** (třeba na počítači bez prohlížeče): v [Graph API Exploreru](https://developers.facebook.com/tools/explorer) vyber vpravo *Meta App* `Tagovačka` a *User Token*, přidej oprávnění `pages_show_list`, `pages_read_engagement` a `pages_manage_posts` a klikni na **Generate Access Token**. Token prodluž v [Access Token Debuggeru](https://developers.facebook.com/tools/debug/accesstoken) (**Debug**, dole **Extend Access Token**) a napiš Claudovi, ať použije ruční nastavení. Založí soubor `.config/claude-facebook/token.txt` v domovské složce a otevře ti ho. Prodloužený token do něj vlož, ulož a napiš Claudovi, že je hotovo.
-
-✅ **Ověření:** Claude vypíše tvoje stránky s `expires never`. Takový token stránky nevyprší, dokud nezměníš heslo k Facebooku nebo nepřijdeš o roli na stránce. Pak stačí krok 2 zopakovat.
+✅ **Ověření:** Claude vypíše tvoje stránky.
 
 ## Aktualizace
 
@@ -152,8 +148,7 @@ Nebo si zapni automatické aktualizace: napiš `/plugin`, otevři záložku **Ma
 | Přihlášení na ceskydiscgolf.cz selhává (401) | Zkontroluj login a heslo v `~/.ceskydiscgolf.json` (přihlas se s nimi na webu). Po pár neúspěších server na chvíli blokuje další pokusy. |
 | „Missing Google OAuth client …“ | Ještě nemáš hotové [Google nastavení](#volitelně-google-tabulky-a-gmail), nebo `credentials.json` není v `~/.config/claude-google/`. |
 | Google tě po týdnu znovu chce přihlásit | Aplikace je ve stavu Testing, oprav to podle bodu 4 v [Google nastavení](#volitelně-google-tabulky-a-gmail). Pak požádej Clauda, ať smaže staré Google tokeny a přihlásí tě znovu. |
-| Facebook hlásí `code 190` nebo stránka `expires` s datem | Token vypršel nebo nebyl prodloužený. Napiš Claudovi *„Nastav Facebook.“* (krok 2 v [nastavení Facebooku](#volitelně-facebook)). |
-| Facebook hlásí `code 200` nebo `code 10` | Chybí oprávnění. Napiš Claudovi *„Nastav Facebook.“* a v přihlášení povol všechna oprávnění, která aplikace chce. |
+| Facebook přestal fungovat | Napiš Claudovi *„Nastav Facebook.“* a v přihlášení povol všechna oprávnění, která aplikace chce. |
 | Claude chce spustit příkaz a ptá se na povolení | To je normální. Čtení dat klidně povol, u zápisů si přečti, co dělá. |
 
 **Kde je to vyzkoušené:** na macOS s Claude Code. Windows (Claude Code s Git Bashem) a Linux by měly fungovat stejně, ale vyzkoušené nejsou. Když narazíš na problém, [založ issue](https://github.com/dominikvoda/claude-skills/issues).
