@@ -125,7 +125,6 @@ Používá se společná Meta aplikace **Tagovačka**. Zatím ji můžou použí
 
 1. Přijmi pozvánku do aplikace na [developers.facebook.com/requests](https://developers.facebook.com/requests) (je potřeba být zaregistrovaný jako vývojář, zdarma).
 2. Napiš Claudovi *„Nastav Facebook.“* Otevře ti v prohlížeči přihlášení k Facebooku. Povol aplikaci Tagovačka všechna oprávnění, která chce, a zaškrtni stránky, které chceš používat. Když prohlížeč napíše *Hotovo, můžeš zavřít okno*, je hotovo.
-3. **Token nikdy nevkládej do chatu.**
 
 ✅ **Ověření:** Claude vypíše tvoje stránky.
 
