@@ -128,6 +128,25 @@ Používá se společná Meta aplikace **Tagovačka**. Zatím ji můžou použí
 
 ✅ **Ověření:** Claude vypíše tvoje stránky.
 
+## Volitelně: lepší texty postů a e-mailů
+
+Dvě cizí skilly, které `tournament-post` a `tournament-email` použijí, když je máš nainstalované. Bez nich fungují taky, jen tě na ně upozorní.
+
+- [humanizer](https://github.com/blader/humanizer): poslední kontrola textu na obraty, podle kterých je poznat, že ho psala AI. Používají ho obě skilly. V Claude Code napiš:
+
+  ```
+  /plugin marketplace add blader/humanizer
+  /plugin install humanizer@humanizer
+  ```
+
+- [social](https://github.com/coreyhaines31/marketingskills) (z balíku marketingskills): háčky na začátek postu a tipy pro Facebook. Používá ho `tournament-post`. Potřebuje Node.js, v terminálu spusť:
+
+  ```
+  npx skills add coreyhaines31/marketingskills --skill social -g -a claude-code
+  ```
+
+  Tahle kopie se sama neaktualizuje, pro novou verzi příkaz spusť znovu.
+
 ## Aktualizace
 
 Nové verze se nestahují samy. Jednou za čas v Claude Code spusť:
@@ -185,6 +204,8 @@ Requirements: Python 3.9+, and [uv](https://docs.astral.sh/uv/) for the Google s
 | Tagovačka login (optional, read-only) | `~/.tagovacka.json`, mode 600: `{"email": "...", "password": "..."}` |
 | Facebook page tokens (optional) | `~/.config/claude-facebook/`: `pages.json` (written by `fb.py connect`, which gets a long-lived token through the Tagovačka token broker), `token.txt` (only for the paste fallback, `fb.py setup`). One shared Meta app in Live mode with Standard Access; users are added as testers. Guide: [Volitelně: Facebook](#volitelně-facebook). |
 | Google OAuth client + tokens | `~/.config/claude-google/` (`credentials.json`, `sheets-token.json`, `forms-token.json`, `gmail-token.json`). Bring your own Desktop OAuth client, see the Setup section of [`gsheets`](plugins/google/skills/gsheets/SKILL.md). |
+
+Optional helpers, used when installed: [humanizer](https://github.com/blader/humanizer) (last check of post and e-mail drafts) and the `social` skill from [marketingskills](https://github.com/coreyhaines31/marketingskills) (hooks and Facebook tips for `tournament-post`). Install commands: [Volitelně: lepší texty postů a e-mailů](#volitelně-lepší-texty-postů-a-e-mailů).
 
 Updates aren't automatic for third-party marketplaces: run `/plugin marketplace update claude-skills`.
 

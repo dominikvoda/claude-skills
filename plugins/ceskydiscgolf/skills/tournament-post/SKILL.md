@@ -7,6 +7,8 @@ description: "Write the post-tournament report for social media (Facebook page o
 
 Builds on **ceskydiscgolf** (client, *your tournaments* check), the **facebook** plugin (past posts of the page, scheduling) and **google:gdrive** (photos). Follow their rules. Works for any league or club page: everything series-specific comes from the event's own data, propositions and page. Without the `facebook` plugin, ask the director to paste a few past reports as the style reference, and hand over the text and the album list for posting by hand.
 
+Optional helpers: `humanizer` (`/plugin marketplace add blader/humanizer`, then `/plugin install humanizer@humanizer`) and `social` (`npx skills add coreyhaines31/marketingskills --skill social -g -a claude-code`). When one is missing, say once that it would help, with its install command, and carry on without it.
+
 ## Voice
 
 The post is the director talking to the players. A reader must not be able to tell it was generated.
@@ -17,6 +19,7 @@ The post is the director talking to the players. A reader must not be able to te
 - Describe conditions as the players lived them, in the director's words. Neither photos nor weather data say how the night felt or how it compared with the forecast.
 - Mark `po rozhozu` on the podium player who won the throw-off (`tiebreak` in the facts), as the page's past posts do.
 - Write player names exactly as registered on ceskydiscgolf.cz, without nicknames, even when past posts use them.
+- If the `social` skill (coreyhaines31/marketingskills) is installed, read its Hook Formulas, No AI Tells and the Facebook part of `references/platforms.md` before drafting, and use them as a checklist. The page's past posts and the rules in this skill win when they disagree. Its posting frequency, content pillars and engagement routine don't apply to a report.
 
 ## Every claim has a source
 

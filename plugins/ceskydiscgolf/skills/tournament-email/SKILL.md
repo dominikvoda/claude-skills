@@ -7,6 +7,8 @@ description: Compose the pre-tournament info e-mail ("info před turnajem", "prv
 
 The user is the **director** of the tournament. This skill writes the e-mail; the director sends it themselves, any way they like. Tournament data comes from the `ceskydiscgolf` skill, so run its scripts as it describes. Take the director's first name for the signature from `GET /user/me/ --auth`, or ask. Every fact in the e-mail has a **source**: the propositions, the tournament settings, the director's message, or their answer. A fact with no source stays out.
 
+Optional helper: `humanizer` (`/plugin marketplace add blader/humanizer`, then `/plugin install humanizer@humanizer`). When it is missing, say once that it would help, with its install command, and carry on without it.
+
 ## 1. Pin the tournament
 
 List the director's events (`GET /tournaments/managed/ --auth`) and match the name, place or date they gave. Done when exactly one UUID is chosen and its name and date are stated back to them. With several candidates, or none upcoming, ask which one.
