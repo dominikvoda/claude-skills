@@ -71,6 +71,8 @@ Pick the form by event:
 
 Use HTML: bold only for key facts (times, places, deadlines, hole count) and the short headings, link text instead of bare URLs, and plain paragraphs and lists for the rest.
 
+If the `humanizer` skill is installed, run it on the draft as the last check, then reread the result against the facts you collected: it must keep the Czech, the facts and the names unchanged, so undo any edit that adds, drops or rewords a fact.
+
 ## 6. Review
 
 Write the e-mail to `<tournament-slug>-info.html` in the working directory, and show the subject and the plain text in the chat. The director can open the HTML file in a browser and copy it into their mail client with the formatting intact. Iterate on their feedback, rewriting the same file. Done when they approve the text.

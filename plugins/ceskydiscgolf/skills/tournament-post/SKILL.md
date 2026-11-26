@@ -41,6 +41,6 @@ Paths are relative to this skill's directory.
    - captions state only what the photo shows (`Pódium MPO`). Tell the podiums apart by facts (category, birth years from `admin-players/` when you direct the event), or ask. Never name individual people in a photo.
 
    Done when every photo is in the album or deliberately left out.
-5. **Draft.** Show the text and the album list. List every claim you are unsure of. Proofread the Czech, including the director's own changes, and point out typos rather than fixing them silently. Done when the director approves the text and the time.
+5. **Draft.** If the `humanizer` skill is installed, run it on the draft as the last check, then reread the result against the Voice and source rules: it must keep the Czech, the facts and the names unchanged, so undo any edit that adds, drops or rewords a fact. Show the text and the album list. List every claim you are unsure of. Proofread the Czech, including the director's own changes, and point out typos rather than fixing them silently. Done when the director approves the text and the time.
 6. **Schedule** with `facebook` (`schedule … --album`; its Album rule covers HEIC and adding photos later). Done when the read-back post has the approved text, every photo in order and the agreed time. Then give the director the Plánovač link and the partner pages to tag there.
 7. **Learn.** If the director edits the post in Plánovač, read it back, diff it against your draft and ask about each change. Propose a rule for this skill when the reason generalizes.
